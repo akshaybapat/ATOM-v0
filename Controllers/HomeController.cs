@@ -18,7 +18,17 @@ namespace ATOMv0.Controllers
     public ActionResult Index()
     {
       ViewBag.Title = "Home Page";
-      return View("DimNavigation");
+      userrolesws userRoles = (userrolesws)TempData["Roles"];
+
+      if (userRoles.roles[0].name == AuthorizeEnumAttribute.GetEnumDescription(RolesEnum.Roles.AtomUser))
+      {
+        return View("DimNavigation");
+      }
+      else
+      {
+        return View("FFSite");
+      }
+
     }
 
     public ActionResult DimNavigation()
@@ -102,6 +112,7 @@ namespace ATOMv0.Controllers
           isValidUser = true;
           FormsAuthentication.SetAuthCookie(model.UserName, false);
           Session["userRoles"] = userRoles;
+          TempData["Roles"] = userRoles;
         }
         else
         {
