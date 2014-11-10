@@ -11,10 +11,10 @@ namespace AtomConfiguratorModel.Models
   {
     public enum Roles
     {
-      [Description("ATOM USER")]
-      AtomUser,
-      [Description("SALES USER")]
-      SalesUser
+      [Description("ATOM_ADMINISTRATOR")]
+      AtomAdministrator,
+      [Description("SITE_ADMINISTRATOR")]
+      SiteAdministrator,
     }
 
   }

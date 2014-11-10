@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace AtomConfiguratorModel.Models
 {
-  [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
+  [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.All, Inherited = true, AllowMultiple = true)]
 
   public class AuthorizeEnumAttribute : AuthorizeAttribute
   {
@@ -31,8 +31,8 @@ namespace AtomConfiguratorModel.Models
 
         this.Roles = string.Join(",", Roles);
       }
-      
-     // this.Roles = "ATOM USER";
+
+      // this.Roles = "ATOM USER";
     }
     public static string GetEnumDescription(Enum value)
     {

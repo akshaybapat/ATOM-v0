@@ -30,7 +30,7 @@ function siteSelectionMenu() {
     })
 
     $('#RegionID').change(function () {
-
+      
         $('#CountriesDivID').hide();
         $('#FacilitiesDivID').hide();
 

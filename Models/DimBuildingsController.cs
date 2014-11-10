@@ -7,9 +7,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PagedList;
+using AtomConfiguratorModel.Models;
 
 namespace ATOMv0.Models
 {
+   [AuthorizeEnum(RolesEnum.Roles.AtomAdministrator)]
     public class DimBuildingsController : Controller
     {
         private FFCubeEntities db = new FFCubeEntities();

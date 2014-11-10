@@ -14,23 +14,37 @@ namespace ATOMv0.Controllers
   public class HomeController : Controller
   {
     bool isValidUser = false;
-    [AuthorizeEnum(RolesEnum.Roles.AtomUser, RolesEnum.Roles.SalesUser)]
+    [AuthorizeEnum(RolesEnum.Roles.AtomAdministrator, RolesEnum.Roles.SiteAdministrator)]
     public ActionResult Index()
     {
       ViewBag.Title = "Home Page";
+
       userrolesws userRoles = (userrolesws)TempData["Roles"];
 
-      if (userRoles.roles[0].name == AuthorizeEnumAttribute.GetEnumDescription(RolesEnum.Roles.AtomUser))
+      if (userRoles != null)
       {
-        return View("DimNavigation");
+
+        if (userRoles.roles[0].name == AuthorizeEnumAttribute.GetEnumDescription(RolesEnum.Roles.AtomAdministrator))
+        {
+          return RedirectToAction("DimNavigation");
+         
+        }
+        else if (userRoles.roles[0].name == AuthorizeEnumAttribute.GetEnumDescription(RolesEnum.Roles.SiteAdministrator))
+        {
+          return RedirectToAction("Index", "FFSite");
+        }
+        else
+        {
+          return RedirectToAction("Login");
+        }
       }
       else
       {
-        return View("FFSite");
+        return RedirectToAction("Login");
       }
 
     }
-
+    [AuthorizeEnum(RolesEnum.Roles.AtomAdministrator)]
     public ActionResult DimNavigation()
     {
       return View();
@@ -66,7 +80,9 @@ namespace ATOMv0.Controllers
       if (isValidUser)
       {
         return RedirectToAction("Index");
+
       }
+
       else
       {
         ModelState.AddModelError("Error", "Please enter valid user name or password");
@@ -87,10 +103,10 @@ namespace ATOMv0.Controllers
 
     private void ClearSessions()
     {
-      if (Session["userRoles"] != null)
-      {
-        Session["userRoles"] = null;
-      }
+      //if (Session["userRoles"] != null)
+      //{
+      //  Session["userRoles"] = null;
+      //}
     }
 
     private bool ValidateUser(LoginModel model)
@@ -111,8 +127,25 @@ namespace ATOMv0.Controllers
         {
           isValidUser = true;
           FormsAuthentication.SetAuthCookie(model.UserName, false);
-          Session["userRoles"] = userRoles;
           TempData["Roles"] = userRoles;
+          string roles = "";
+
+
+
+          foreach (var item in userRoles.roles)
+          {
+            if (roles == "")
+            {
+              roles = item.name;
+            }
+            else
+            {
+              roles = roles + ";" + item.name;
+            }
+          }
+          //roles = "ATOM_ADMINISTRATOR;SALES_USER";
+          FormsAuthentication.SetAuthCookie(model.UserName + "|" + roles, false);
+
         }
         else
         {
