@@ -38,5 +38,8 @@ namespace ATOMv0.Models
         public virtual DbSet<DimPhysicalStation> DimPhysicalStations { get; set; }
         public virtual DbSet<DimRegion> DimRegions { get; set; }
         public virtual DbSet<DimStationType> DimStationTypes { get; set; }
+        public DbSet<Metric> Metrics { get; set; }
+        public DbSet<MetricRoleType> MetricRoleTypes { get; set; }
+        public DbSet<MetricConfiguration> MetricConfigurations { get; set; }
     }
 }

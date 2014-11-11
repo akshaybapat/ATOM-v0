@@ -12,16 +12,13 @@ namespace ATOMv0.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DimRegion
+    public partial class SpeedMeasure
     {
-        public DimRegion()
-        {
-            this.DimCountries = new HashSet<DimCountry>();
-        }
-    
         public int id { get; set; }
-        public string RegionName { get; set; }
-    
-        public virtual ICollection<DimCountry> DimCountries { get; set; }
+        public System.DateTime Starttime { get; set; }
+        public Nullable<System.DateTime> Endtime { get; set; }
+        public Nullable<int> NoRecords { get; set; }
+        public Nullable<System.DateTime> FromDate { get; set; }
+        public Nullable<System.DateTime> ToDate { get; set; }
     }
 }

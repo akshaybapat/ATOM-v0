@@ -12,16 +12,17 @@ namespace ATOMv0.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DimRegion
+    public partial class DimDatetime
     {
-        public DimRegion()
-        {
-            this.DimCountries = new HashSet<DimCountry>();
-        }
-    
         public int id { get; set; }
-        public string RegionName { get; set; }
-    
-        public virtual ICollection<DimCountry> DimCountries { get; set; }
+        public Nullable<System.DateTime> DatetimeName { get; set; }
+        public Nullable<int> Year { get; set; }
+        public Nullable<int> Week { get; set; }
+        public Nullable<int> Day { get; set; }
+        public Nullable<int> Hour { get; set; }
+        public Nullable<int> QtrHour { get; set; }
+        public string Month { get; set; }
+        public string DateName { get; set; }
+        public Nullable<int> MonthNo { get; set; }
     }
 }

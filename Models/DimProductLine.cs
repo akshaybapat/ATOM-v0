@@ -12,16 +12,18 @@ namespace ATOMv0.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DimRegion
+    public partial class DimProductLine
     {
-        public DimRegion()
+        public DimProductLine()
         {
-            this.DimCountries = new HashSet<DimCountry>();
+            this.DimProductNumbers = new HashSet<DimProductNumber>();
         }
     
         public int id { get; set; }
-        public string RegionName { get; set; }
+        public string ProductLineName { get; set; }
+        public Nullable<int> KeyBusinessPartner { get; set; }
     
-        public virtual ICollection<DimCountry> DimCountries { get; set; }
+        public virtual DimBusinessPartner DimBusinessPartner { get; set; }
+        public virtual ICollection<DimProductNumber> DimProductNumbers { get; set; }
     }
 }

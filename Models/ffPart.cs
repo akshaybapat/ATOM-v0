@@ -12,16 +12,12 @@ namespace ATOMv0.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DimRegion
+    public partial class ffPart
     {
-        public DimRegion()
-        {
-            this.DimCountries = new HashSet<DimCountry>();
-        }
-    
         public int id { get; set; }
-        public string RegionName { get; set; }
-    
-        public virtual ICollection<DimCountry> DimCountries { get; set; }
+        public Nullable<int> SiteID { get; set; }
+        public Nullable<int> PartID { get; set; }
+        public string PartNumber { get; set; }
+        public string Revision { get; set; }
     }
 }

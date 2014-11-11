@@ -12,16 +12,16 @@ namespace ATOMv0.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DimRegion
+    public partial class DimProcessType
     {
-        public DimRegion()
+        public DimProcessType()
         {
-            this.DimCountries = new HashSet<DimCountry>();
+            this.DimBuckets = new HashSet<DimBucket>();
         }
     
         public int id { get; set; }
-        public string RegionName { get; set; }
+        public string ProcessTypeName { get; set; }
     
-        public virtual ICollection<DimCountry> DimCountries { get; set; }
+        public virtual ICollection<DimBucket> DimBuckets { get; set; }
     }
 }

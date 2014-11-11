@@ -12,16 +12,17 @@ namespace ATOMv0.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class DimRegion
+    public partial class Metric
     {
-        public DimRegion()
+        public Metric()
         {
-            this.DimCountries = new HashSet<DimCountry>();
+            this.MetricConfigurations = new HashSet<MetricConfiguration>();
         }
     
         public int id { get; set; }
-        public string RegionName { get; set; }
+        public string MetricName { get; set; }
+        public string Status { get; set; }
     
-        public virtual ICollection<DimCountry> DimCountries { get; set; }
+        public virtual ICollection<MetricConfiguration> MetricConfigurations { get; set; }
     }
 }
