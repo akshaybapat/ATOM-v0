@@ -1,4 +1,4 @@
-﻿using AtomConfiguratorModel.Models;
+﻿using ATOMv0.Models;
 using Flextronics.QMSCC.Commons.SystemIntegrations.FlexWare.AuthenticationServices;
 using Flextronics.QMSCC.Commons.SystemIntegrations.FlexWare.Services;
 using System;

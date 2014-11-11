@@ -13,7 +13,7 @@ using System.Web.Script.Serialization;
 using ATOMv0.Models;
 using System.Web.Security;
 
-namespace AtomConfiguratorModel.Models
+namespace ATOMv0.Models
 {
    [AuthorizeEnum(RolesEnum.Roles.SiteAdministrator)]
   public class FFSiteController : Controller

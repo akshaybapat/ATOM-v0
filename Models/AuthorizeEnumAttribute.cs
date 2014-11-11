@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
-namespace AtomConfiguratorModel.Models
+namespace ATOMv0.Models
 {
   [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.All, Inherited = true, AllowMultiple = true)]
 

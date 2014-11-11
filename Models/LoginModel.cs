@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace AtomConfiguratorModel.Models
+namespace ATOMv0.Models
 {
   public class LoginModel
   {

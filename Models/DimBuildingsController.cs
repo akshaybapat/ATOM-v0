@@ -7,7 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PagedList;
-using AtomConfiguratorModel.Models;
+using ATOMv0.Models;
 
 namespace ATOMv0.Models
 {

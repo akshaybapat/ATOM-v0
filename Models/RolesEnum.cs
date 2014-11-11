@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
 
-namespace AtomConfiguratorModel.Models
+namespace ATOMv0.Models
 {
   public class RolesEnum
   {
