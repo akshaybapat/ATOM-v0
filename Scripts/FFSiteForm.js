@@ -694,9 +694,22 @@ $('#Next-ToBucketSelection').on('click', function () {
 
     });
 
+    var nonbucketedstationtypes = $('#stationtypesresultset li');
+
+    jsonNonBucketedStationTypes = [];
+
+    $.each(nonbucketedstationtypes, function (i, stationtype) {
+      var row = $(stationtype).find("#selectedStationTypeName").text();
+      jsonNonBucketedStationTypes.push(row);
+      console.log(row);
+
+    });
+
+
     var bucketstntypesmodel = {
       bucketname: $('#BucketsDropDown option:selected').text(),
-      orderedstationtypes: jsonOrderedStationTypes
+      orderedstationtypes: jsonOrderedStationTypes,
+      nonbucketedstationtypes: jsonNonBucketedStationTypes
 
     }
 

@@ -9,5 +9,6 @@ namespace ATOMv0.Models
     {
         public string bucketname { get; set; }
         public List<String> orderedstationtypes { get; set; }
+        public List<String> nonbucketedstationtypes { get; set; }
     }
 }

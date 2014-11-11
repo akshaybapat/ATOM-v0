@@ -159,6 +159,10 @@ namespace ATOMv0.Models
 
             querystationtypes = querystationtypes.Where(x => x.KeyBucket == bucket.id).OrderBy(x => x.Sequence);
           }
+          else
+          {
+            querystationtypes = querystationtypes.Where(x => x.KeyBucket == null);
+          }
 
           var liststationtypes = querystationtypes.ToList();
 
