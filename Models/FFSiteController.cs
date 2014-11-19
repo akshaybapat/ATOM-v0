@@ -15,7 +15,7 @@ using System.Web.Security;
 
 namespace ATOMv0.Models
 {
-   [AuthorizeEnum(RolesEnum.Roles.SiteAdministrator)]
+  // [AuthorizeEnum(RolesEnum.Roles.SiteAdministrator)]
   public class FFSiteController : Controller
   {
 
@@ -23,9 +23,10 @@ namespace ATOMv0.Models
 
     // GET: FFSite
 
-   
+
     public ActionResult Index()
     {
+      string siteName = Convert.ToString(TempData["SiteName"]);
       // bool isRole = User.IsInRole(RolesEnum.Roles.AtomAdministrator.ToString());
       // string[] roles = Roles.GetRolesForUser();
       // string userName = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value).Name;
@@ -33,8 +34,33 @@ namespace ATOMv0.Models
 
       // if (roles.Contains(RolesEnum.Roles.SiteAdministrator.ToString()))
       // {
-      ViewBag.KeyRegion = (from r in db.DimRegions
-                           select r.RegionName).Distinct();
+
+      //var queryfacilities = db.DimFacilities.Where(x => x.SiteName == "ZhuHai_DM").ToList();
+
+      //IEnumerable<DimFacility> facilities = queryfacilities.Select(x => new DimFacility { SiteName = x.SiteName, id = x.id });
+      ViewBag.SiteName = siteName;
+
+      if (siteName != "" && siteName != null)
+      {
+        //var allsite = db.DimFacilities.Select(x=>x.SiteName);
+        var queryfacilities = db.DimFacilities.Where(x => x.SiteName == siteName).ToList();
+        //IEnumerable<DimFacility> facilities = queryfacilities.Select(x => new DimFacility { SiteName = x.SiteName, id = x.id });                  
+
+        ViewBag.CountryName = queryfacilities[0].DimCountry.CountryName;
+
+        ViewBag.RegionName = queryfacilities[0].DimCountry.DimRegion.RegionName;
+
+        ViewBag.KeyRegion = (from r in db.DimRegions
+                             select r.RegionName).Distinct();
+      }
+      else
+      {
+        ViewBag.CountryName = "";
+
+        ViewBag.RegionName = "";
+
+        ViewBag.KeyRegion = "";
+      }
       return View();
       //}
       //else

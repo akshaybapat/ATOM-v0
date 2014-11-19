@@ -158,7 +158,14 @@ namespace ATOMv0.Controllers
         {
           foreach (var item in masterData)
           {
-
+            if (item.objects != null)
+            {
+              foreach (var siteItem in item.objects)
+              {
+                TempData["SiteName"] = siteItem.name;
+              }
+            }
+            
           }
         }
         return isValidUser;

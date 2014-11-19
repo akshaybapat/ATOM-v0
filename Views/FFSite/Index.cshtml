@@ -1,5 +1,28 @@
 ﻿@model ATOMv0.Models.FFSite
+<script type="text/javascript">
 
+  $(document).ready(function () {
+    var site = $('#lblSiteName').text();
+    if (site == "") {
+      
+      $('#RegionsDivID').hide();
+      $('#CountriesDivID').hide();
+      $('#FacilitiesDivID').hide();
+      $('#Next-ToBuildingSelection').hide();
+      $('#divERegionsDivIDrrorMsg').show();
+      
+    }
+    else
+    {
+      $('#RegionsDivID').show();
+      $('#CountriesDivID').show();
+      $('#FacilitiesDivID').show();
+      $('#Next-ToBuildingSelection').show();
+      $('#divErrorMsg').hide();
+    }
+
+  });
+</script>
 <form id="msform">
   <!-- progressbar -->
   <ul id="progressbar" style="min-width:650px;">
@@ -29,19 +52,30 @@
       <input id="DimBuildingsDeleteUrl" type="hidden" data-url="@Url.Action("Delete", "DimBuildings")" />
 
 
-      <div class="form-control-static" style="align-self:center">
-        @Html.DropDownListFor(model => model.ListRegions, new SelectList(ViewBag.KeyRegion), "Select a Region", new { id = "RegionID" })
-        @Html.ValidationMessageFor(model => model.ListRegions)
+      <div id="RegionsDivID"  class="form-control-static" style="align-self:center">
+        @*@Html.DropDownListFor(model => model.ListRegions, new SelectList(ViewBag.KeyRegion), "Select a Region", new { id = "RegionID" })
+        @Html.ValidationMessageFor(model => model.ListRegions)*@
+        <span>Region</span><br />
+        @Html.Label("lblRegionsName", (string)ViewBag.RegionName)
       </div>
 
       <div id="CountriesDivID" class="form-control-static" style="align-self:center">
-        <select id="CountriesID">Select a Country</select>
-        @Html.ValidationMessageFor(model => model.ListCountries)
+        @*<select id="CountriesID">Select a Country</select>
+        @Html.ValidationMessageFor(model => model.ListCountries)*@
+        <span>Country</span><br />
+        @Html.Label("lblCountryName", (string)ViewBag.CountryName)
       </div>
 
       <div id="FacilitiesDivID" class="form-control-static" style="align-self:center">
-        <select id="FacilitiesID">Select a Site</select>
-        @Html.ValidationMessageFor(model => model.ListFacilities)
+        @*<select id="FacilitiesID">Select a Site</select>
+        @Html.ValidationMessageFor(model => model.ListFacilities)*@
+        <span>Site</span><br />
+        @Html.Label("", (string)ViewBag.SiteName, new { id = "lblSiteName" })
+      </div>
+
+      <div id="divErrorMsg" class="form-control-static" style="align-self:center">
+
+        <span></span>No site records found for this user.
       </div>
 
       <input id="Next-ToBuildingSelection" type="button" name="next" class="next action-button" value="Next" />
@@ -138,6 +172,5 @@
 
   </div>
 </form>
-
 
 

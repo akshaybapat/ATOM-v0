@@ -45,7 +45,10 @@ function gotoURL(url) {
 function getAvailableCustomers() {
   var selection = '';
 
-  selection = $('#FacilitiesID option:selected').text()
+  //selection = $('#FacilitiesID option:selected').text()
+
+  selection=$('#lblSiteName').text();
+
 
   var availablecustomers = '';
 
@@ -208,8 +211,13 @@ $('#FacilitiesDivID').hide();
 $('#Next-ToBuildingSelection').hide();
 
 
-$('#RegionID').load(function () {
+$('#msform').load(function () {
+  debugger;
+});
 
+
+$('#RegionID').load(function () {
+  debugger;
   //$.getJSON('/FFSite/GetDropDownData', { typeofData: "RegionList" }, function (data) {
   //  var items = '<option>Select a Country</option>';
   //  $.each(data, function (i, region) {
@@ -325,13 +333,16 @@ $('#FacilitiesID').change(function () {
 
 $('#Next-ToBuildingSelection').on('click', function () {
 
+
   $('#Next-ToBucketSelection').hide();
   $('#availablecustomersresultset').html("");
   $('#assignedcustomersresultset').html("");
 
-  var site = $('#FacilitiesID option:selected').text();
+  //var site = $('#FacilitiesID option:selected').text();
 
-  $("#progressbar li").eq(0).append("<br/> { " + site + " }");
+  var siteName = $('#lblSiteName').text();
+
+  $("#progressbar li").eq(0).append("<br/> { " + siteName + " }");
 
   //$.getJSON('/FFSite/GetDropDownData', { typeofData: "BuildingList", filter: $('#FacilitiesID option:selected').text() }, function (data) {
   //    var items = '<option>Select a Building</option>';
@@ -351,7 +362,8 @@ $('#Next-ToBuildingSelection').on('click', function () {
   $.ajax({
     type: 'POST',
     url: $('#getDropdownActionUrl').data('url'),
-    data: { typeofData: "BuildingList", filter: $('#FacilitiesID option:selected').text() },
+    //data: { typeofData: "BuildingList", filter: $('#FacilitiesID option:selected').text() },
+    data: { typeofData: "BuildingList", filter: siteName },
     success: function (data) {
       var items = '<option>Select a Building</option>';
 
