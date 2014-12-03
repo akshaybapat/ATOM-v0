@@ -19,24 +19,43 @@ namespace ATOMv0.Controllers
     {
       ViewBag.Title = "Home Page";
 
-      userrolesws userRoles = (userrolesws)TempData["Roles"];
+      //userrolesws userRoles = (userrolesws)TempData["Roles"];
+      userrolesws userRoles = (userrolesws)Session["Roles"];
+
 
       if (userRoles != null)
       {
 
-        if (userRoles.roles[0].name == AuthorizeEnumAttribute.GetEnumDescription(RolesEnum.Roles.AtomAdministrator))
+        //if (userRoles.roles[0].name == AuthorizeEnumAttribute.GetEnumDescription(RolesEnum.Roles.AtomAdministrator))
+        //{
+
+        //  return RedirectToAction("Index", "FFSite");
+
+        //}
+        //else if (userRoles.roles[0].name == AuthorizeEnumAttribute.GetEnumDescription(RolesEnum.Roles.SiteAdministrator))
+        //{
+        //  return RedirectToAction("Index", "FFSite");
+        //}
+        //else
+        //{
+        //  return RedirectToAction("Login");
+        //}
+
+        if (userRoles.roles.Count() > 0)
         {
-          return RedirectToAction("DimNavigation");
-         
+          foreach (var item in userRoles.roles)
+          {
+            if (item.name == AuthorizeEnumAttribute.GetEnumDescription(RolesEnum.Roles.AtomAdministrator))
+            {
+              ViewBag.AtomAdmin = true;
+            }
+            else if (item.name == AuthorizeEnumAttribute.GetEnumDescription(RolesEnum.Roles.SiteAdministrator))
+            {
+              ViewBag.SiteAdmin = true;
+            }
+          }
         }
-        else if (userRoles.roles[0].name == AuthorizeEnumAttribute.GetEnumDescription(RolesEnum.Roles.SiteAdministrator))
-        {
-          return RedirectToAction("Index", "FFSite");
-        }
-        else
-        {
-          return RedirectToAction("Login");
-        }
+        return View("LandingPage");
       }
       else
       {
@@ -48,6 +67,11 @@ namespace ATOMv0.Controllers
     public ActionResult DimNavigation()
     {
       return View();
+    }
+
+    public ActionResult LandingAction()
+    {
+      return RedirectToAction("Index", "FFSite");
     }
 
     public ActionResult About()
@@ -95,7 +119,7 @@ namespace ATOMv0.Controllers
       if (Request.IsAuthenticated)
       {
         FormsAuthentication.SignOut();
-        ClearSessions();
+        //ClearSessions();
       }
 
       return RedirectToAction("Login");
@@ -103,10 +127,14 @@ namespace ATOMv0.Controllers
 
     private void ClearSessions()
     {
-      //if (Session["userRoles"] != null)
-      //{
-      //  Session["userRoles"] = null;
-      //}
+      if (Session["Roles"] != null)
+      {
+        Session["Roles"] = null;
+      }
+      if (Session["SiteName"] != null)
+      {
+        Session["SiteName"] = null;
+      }
     }
 
     private bool ValidateUser(LoginModel model)
@@ -118,8 +146,80 @@ namespace ATOMv0.Controllers
         string MasterDataErrors = string.Empty;
         string url = ConfigurationManager.AppSettings["FlexwareUrlQA"];
         string strSolutionCode = Convert.ToString(ConfigurationManager.AppSettings["SolutionCode"]);
-        Authentication authentication = new Authentication(url);
 
+
+
+        #region Authentication Service DONT DELETE
+
+
+        //ATOMv0.AuthService.authenticationPortClient cl = new AuthService.authenticationPortClient();
+        //ATOMv0.AuthService.credentialsws crd = new AuthService.credentialsws();
+        //crd.username = model.UserName;
+        //crd.password = model.Password;
+        //crd.solutionCode = strSolutionCode;
+        //ATOMv0.AuthService.authenticate auth = new AuthService.authenticate();
+        //auth.credentials = crd;
+
+        //ATOMv0.AuthService.flexwaretokenws fxToken = new AuthService.flexwaretokenws();
+
+        //fxToken = cl.authenticate(crd);
+
+        //var userRoles = cl.getUserRoles(fxToken);
+
+        #endregion
+
+
+        #region Request to Role service DONT DELETE
+
+        //NOTE:- DONT DELETE THIS IT WILL REPLACE WITH REAL DATA
+
+        //ATOMv0.ServiceReference1.importUserRolePortClient clientImportRole = new ServiceReference1.importUserRolePortClient();
+        //ATOMv0.ServiceReference1.importUserRoleData importRoleData = new ServiceReference1.importUserRoleData();
+        //ATOMv0.ServiceReference1.flexwaretokenws impDataToken = new ServiceReference1.flexwaretokenws();
+        //impDataToken.token = fxToken.token;
+
+        //ATOMv0.ServiceReference1.usermasterws impUserMaster = new ATOMv0.ServiceReference1.usermasterws();
+        //impUserMaster.userName = model.UserName;
+
+        //ATOMv0.ServiceReference1.masterrolews impMasterRole = new ServiceReference1.masterrolews();
+        //impMasterRole.code = "METRIC01";
+
+        //ATOMv0.ServiceReference1.solutionrolews[] impSolutionRole = new ATOMv0.ServiceReference1.solutionrolews[]
+        //{
+        //    new ATOMv0.ServiceReference1.solutionrolews{ code = "METRIC01"}
+        //};
+
+        //impMasterRole.solutionroles = impSolutionRole;
+
+        //ATOMv0.ServiceReference1.masterdataobjectws impMasterData = new ATOMv0.ServiceReference1.masterdataobjectws();
+        //impMasterData.code = "ATOMSITE";
+
+        //ATOMv0.ServiceReference1.masterdataelementws subMasteraData = new ServiceReference1.masterdataelementws();
+        //subMasteraData.objects = new ServiceReference1.masterdataobjectws[]
+        //{
+
+        //  new ATOMv0.ServiceReference1.masterdataobjectws{code = "BUDAPEST"}
+        //};
+
+        //ATOMv0.ServiceReference1.masterdataelementws[] objMasterData = new ServiceReference1.masterdataelementws[]
+        //{
+        //   new ATOMv0.ServiceReference1.masterdataelementws{code = "ATOMSITE", objects = subMasteraData.objects}
+        //};
+
+        //ATOMv0.ServiceReference1.userroledataws[] userRoleDataList = new ServiceReference1.userroledataws[]
+        //{
+        //   new ATOMv0.ServiceReference1.userroledataws{masterData=objMasterData,masterRole=impMasterRole, requestApprovals="Y",status="true",userMaster=impUserMaster}
+        //};
+
+        //importRoleData.flexwareToken = impDataToken;
+        //importRoleData.userRoleDataList = userRoleDataList;
+        //clientImportRole.Open();
+        //var result = clientImportRole.importUserRole(importRoleData);
+
+        #endregion
+
+
+        Authentication authentication = new Authentication(url);
         string tokenAuthentication = authentication.AuthenticateUser(model.UserName, model.Password, strSolutionCode);
         userrolesws userRoles = FlexWareGetUserRoles(authentication);
 
@@ -128,6 +228,7 @@ namespace ATOMv0.Controllers
           isValidUser = true;
           FormsAuthentication.SetAuthCookie(model.UserName, false);
           TempData["Roles"] = userRoles;
+          Session["Roles"] = userRoles;
           string roles = "";
 
 
@@ -163,9 +264,10 @@ namespace ATOMv0.Controllers
               foreach (var siteItem in item.objects)
               {
                 TempData["SiteName"] = siteItem.name;
+                Session["SiteName"] = siteItem.name;
               }
             }
-            
+
           }
         }
         return isValidUser;

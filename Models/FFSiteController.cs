@@ -15,7 +15,7 @@ using System.Web.Security;
 
 namespace ATOMv0.Models
 {
-  // [AuthorizeEnum(RolesEnum.Roles.SiteAdministrator)]
+  [AuthorizeEnum(RolesEnum.Roles.SiteAdministrator)]
   public class FFSiteController : Controller
   {
 
@@ -26,7 +26,8 @@ namespace ATOMv0.Models
 
     public ActionResult Index()
     {
-      string siteName = Convert.ToString(TempData["SiteName"]);
+      string siteName = Convert.ToString(Session["SiteName"]);
+      //string siteName = Convert.ToString(TempData["SiteName"]);
       // bool isRole = User.IsInRole(RolesEnum.Roles.AtomAdministrator.ToString());
       // string[] roles = Roles.GetRolesForUser();
       // string userName = FormsAuthentication.Decrypt(Request.Cookies[FormsAuthentication.FormsCookieName].Value).Name;
@@ -76,6 +77,12 @@ namespace ATOMv0.Models
     // GET: FFSite/GetDropDownData
     public JsonResult GetDropDownData(string typeofData, string filter, string buildingfilter, string bucketfilter)
     {
+
+      if (buildingfilter != null)
+      {
+        ViewBag.BuildingName = buildingfilter;
+      }
+
       switch (typeofData)
       {
 

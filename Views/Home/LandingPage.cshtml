@@ -1,0 +1,23 @@
+﻿
+
+<form id="msform">
+  <div>
+    <fieldset style="margin:0 10%; min-width:600px;">
+      <div>
+        @if (ViewBag.AtomAdmin == true)
+        {
+          @Html.ActionLink("Atom Administrator", "DimNavigation", "Home")
+        }
+      </div>
+
+      <div>
+        @if (ViewBag.SiteAdmin == true)
+        {
+          @Html.ActionLink("Site Administrator", "Index", "FFSite")
+        }
+      </div>
+    </fieldset>
+  </div>
+</form>
+
+

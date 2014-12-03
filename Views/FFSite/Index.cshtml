@@ -4,16 +4,15 @@
   $(document).ready(function () {
     var site = $('#lblSiteName').text();
     if (site == "") {
-      
+
       $('#RegionsDivID').hide();
       $('#CountriesDivID').hide();
       $('#FacilitiesDivID').hide();
       $('#Next-ToBuildingSelection').hide();
       $('#divERegionsDivIDrrorMsg').show();
-      
+
     }
-    else
-    {
+    else {
       $('#RegionsDivID').show();
       $('#CountriesDivID').show();
       $('#FacilitiesDivID').show();
@@ -24,6 +23,11 @@
   });
 </script>
 <form id="msform">
+
+  
+
+
+
   <!-- progressbar -->
   <ul id="progressbar" style="min-width:650px;">
     <li class="active" style="color:black">Site Selection</li>
@@ -33,8 +37,9 @@
   </ul>
   <!-- fieldsets -->
   <div>
-    <fieldset style="margin:0 10%; min-width:600px;">
 
+    <fieldset style="margin:0 10%; min-width:600px;">
+     
       <h2>Select your site</h2>
       @Html.ValidationSummary(true)
       <input id="getDropdownActionUrl" type="hidden" data-url="@Url.Action("GetDropDownData", "FFSite")" />
@@ -52,23 +57,23 @@
       <input id="DimBuildingsDeleteUrl" type="hidden" data-url="@Url.Action("Delete", "DimBuildings")" />
 
 
-      <div id="RegionsDivID"  class="form-control-static" style="align-self:center">
+      <div id="RegionsDivID" class="form-control-static" style="align-self:center">
         @*@Html.DropDownListFor(model => model.ListRegions, new SelectList(ViewBag.KeyRegion), "Select a Region", new { id = "RegionID" })
-        @Html.ValidationMessageFor(model => model.ListRegions)*@
+          @Html.ValidationMessageFor(model => model.ListRegions)*@
         <span>Region</span><br />
         @Html.Label("lblRegionsName", (string)ViewBag.RegionName)
       </div>
 
       <div id="CountriesDivID" class="form-control-static" style="align-self:center">
         @*<select id="CountriesID">Select a Country</select>
-        @Html.ValidationMessageFor(model => model.ListCountries)*@
+          @Html.ValidationMessageFor(model => model.ListCountries)*@
         <span>Country</span><br />
         @Html.Label("lblCountryName", (string)ViewBag.CountryName)
       </div>
 
       <div id="FacilitiesDivID" class="form-control-static" style="align-self:center">
         @*<select id="FacilitiesID">Select a Site</select>
-        @Html.ValidationMessageFor(model => model.ListFacilities)*@
+          @Html.ValidationMessageFor(model => model.ListFacilities)*@
         <span>Site</span><br />
         @Html.Label("", (string)ViewBag.SiteName, new { id = "lblSiteName" })
       </div>
@@ -83,6 +88,22 @@
     </fieldset>
 
     <fieldset style="margin: 0 10%; min-width: 600px;">
+      <div>
+        <table border="1">
+          
+          <tr>
+            <td>Region</td>
+            <td>Country</td>
+            <td>Site</td>
+          </tr>
+          <tr>
+            <td>@ViewBag.RegionName</td>
+            <td>@ViewBag.CountryName</td>
+            <td>@ViewBag.SiteName</td>
+          </tr>
+        </table>
+
+      </div>
 
       <div class="form-group">
         <h3>Buildings</h3>
@@ -144,6 +165,25 @@
 
 
     <fieldset style="margin:0 10%;  min-width:600px;">
+      <div>
+        <table border="1">
+
+          <tr>
+            <td>Region</td>
+            <td>Country</td>
+            <td>Site</td>
+            <td>Builidings</td>
+          </tr>
+          <tr>
+            <td>@ViewBag.RegionName</td>
+            <td>@ViewBag.CountryName</td>
+            <td>@ViewBag.SiteName</td>
+            <td><div id="divBuildingName"></div></td>
+           
+          </tr>
+        </table>
+
+      </div>
 
       <h3>Station Bucket</h3>
 

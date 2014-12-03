@@ -341,8 +341,10 @@ $('#Next-ToBuildingSelection').on('click', function () {
   //var site = $('#FacilitiesID option:selected').text();
 
   var siteName = $('#lblSiteName').text();
+  
 
-  $("#progressbar li").eq(0).append("<br/> { " + siteName + " }");
+
+//  $("#progressbar li").eq(0).append("<br/> { " + siteName + " }");
 
   //$.getJSON('/FFSite/GetDropDownData', { typeofData: "BuildingList", filter: $('#FacilitiesID option:selected').text() }, function (data) {
   //    var items = '<option>Select a Building</option>';
@@ -517,9 +519,9 @@ $('#Next-ToBucketSelection').on('click', function () {
 
 
   //         });
+  
 
-
-
+  $('#divBuildingName').html(building);
   $.ajax({
     type: 'POST',
     url: $('#getDropdownActionUrl').data('url'),
@@ -530,6 +532,7 @@ $('#Next-ToBucketSelection').on('click', function () {
         items += "<option value='" + customer.id + "'>" + customer.BPCode + "</option>";
       });
       $('#CustomersDropDown').html(items);
+      
     }
   });
 
