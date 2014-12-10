@@ -4,10 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2e0b5b2421bb42219107055cb8ceccde" Name="Diagram1">
+      <Diagram DiagramId="2e0b5b2421bb42219107055cb8ceccde" Name="Diagram1" ZoomLevel="71">
         <EntityTypeShape EntityType="FFCubeModel.DimBucket" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FFCubeModel.DimBuilding" Width="1.5" PointX="7.5" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="FFCubeModel.DimBusinessPartner" Width="1.5" PointX="7.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FFCubeModel.DimBusinessUnit" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="FFCubeModel.DimCostCenter" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
         <EntityTypeShape EntityType="FFCubeModel.DimCountry" Width="1.5" PointX="3" PointY="2.375" IsExpanded="true" />
@@ -24,6 +23,12 @@
         <AssociationConnector Association="FFCubeModel.FK_Country" ManuallyRouted="false" />
         <AssociationConnector Association="FFCubeModel.FK_Region" ManuallyRouted="false" />
         <AssociationConnector Association="FFCubeModel.FK_Module" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FFCubeModel.DimProductLine" Width="1.5" PointX="10" PointY="8.25" />
+        <EntityTypeShape EntityType="FFCubeModel.MetricConfiguration" Width="1.5" PointX="14.25" PointY="2.25" />
+        <AssociationConnector Association="FFCubeModel.FK_MetricConfiguration_DimFacility" />
+        <AssociationConnector Association="FFCubeModel.FK_MetricConfiguration_DimFFInstance" />
+        <EntityTypeShape EntityType="FFCubeModel.DimBusinessPartner" Width="1.5" PointX="7.375" PointY="12" />
+        <AssociationConnector Association="FFCubeModel.FK_MetricConfiguration_DimBusinessPartner" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

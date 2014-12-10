@@ -17,7 +17,6 @@ namespace ATOMv0.Models
         public DimBuilding()
         {
             this.DimModules = new HashSet<DimModule>();
-            this.DimBusinessPartners = new HashSet<DimBusinessPartner>();
         }
     
         public int id { get; set; }
@@ -27,6 +26,5 @@ namespace ATOMv0.Models
     
         public virtual DimFacility DimFacility { get; set; }
         public virtual ICollection<DimModule> DimModules { get; set; }
-        public virtual ICollection<DimBusinessPartner> DimBusinessPartners { get; set; }
     }
 }

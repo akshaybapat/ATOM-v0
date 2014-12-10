@@ -25,6 +25,22 @@
             @Html.DisplayFor(model => model.DimRegion.RegionName)
         </dd>
 
+      <dt>
+        Status
+      </dt>
+      @{
+        if (Model.IsActive == 1)
+        {
+          <dd>Active</dd>
+        }
+        else if (Model.IsActive == 0)
+        {
+          <dd>InActive</dd>
+        }
+      }
+
+
+
     </dl>
 
     <div class="form-actions no-color">

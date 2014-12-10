@@ -28,5 +28,7 @@ namespace ATOMv0.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<ATOMv0.Models.BusinessPartnerCustom> BusinessPartnerCustoms { get; set; }
     }
 }

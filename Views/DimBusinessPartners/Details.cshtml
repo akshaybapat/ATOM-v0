@@ -1,39 +1,73 @@
-﻿@model ATOMv0.Models.DimBusinessPartner
+﻿@model ATOMv0.Models.BusinessPartnerCustom
 @{
-    ViewBag.Title = "Details";
+  ViewBag.Title = "Details";
 }
 
 <h2>Details</h2>
 
 <div class="form-crud">
-    <h4>DimBusinessPartner</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.BusinessPartnerName)
-        </dt>
+  <h4>Business Partner Details</h4>
+  <hr />
+  <dl class="dl-horizontal">
+    <dt>
+      @Html.DisplayNameFor(model => model.BusinessPartnerName)
+    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.BusinessPartnerName)
-        </dd>
+    <dd>
+      @Html.DisplayFor(model => model.BusinessPartnerName)
+    </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.BPCode)
-        </dt>
+    <dt>
+      @Html.DisplayNameFor(model => model.BPCode)
+    </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.BPCode)
-        </dd>
+    <dd>
+      @Html.DisplayFor(model => model.BPCode)
+    </dd>
+
+    <dt>
+      @Html.DisplayNameFor(model => model.BuildingName)
+    </dt>
+
+    <dd>
+      @Html.DisplayFor(model => model.BuildingName)
+    </dd>
+
+    <dt>
+      @Html.DisplayNameFor(model => model.SiteName)
+    </dt>
+
+    <dd>
+      @Html.DisplayFor(model => model.SiteName)
+    </dd>
+
+
+
+    <dt>
+      Status
+    </dt>
+    @{
+       if(Model.IsActive==1)
+          {
+             <dd>Active</dd>
+          }
+       else if (Model.IsActive == 0)
+          {
+           <dd>InActive</dd>
+          }
+     }
+        
+      
 
     </dl>
 
-    <div class="form-actions no-color">
+      <div class="form-actions no-color">
         <input type="button" class="btn btn-info " value="Edit" onclick="location.href='@Url.Action("Edit", new { id = Model.id })'" />
-    </div>
-    <br />
+      </div>
+      <br />
 
-    <p>
+      <p>
         @Html.ActionLink("Back to List", "Index")
-    </p>
-</div>
+      </p>
+    </div>
 

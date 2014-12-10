@@ -23,7 +23,6 @@ namespace ATOMv0.Models
         public string ProductLineName { get; set; }
         public Nullable<int> KeyBusinessPartner { get; set; }
     
-        public virtual DimBusinessPartner DimBusinessPartner { get; set; }
         public virtual ICollection<DimProductNumber> DimProductNumbers { get; set; }
     }
 }

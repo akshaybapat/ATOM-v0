@@ -10,22 +10,14 @@
 namespace ATOMv0.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class DimBusinessPartner
+    public partial class GetBusinessPartnerListByID_Result
     {
-        public DimBusinessPartner()
-        {
-            this.MetricConfigurations = new HashSet<MetricConfiguration>();
-        }
-    
         public int id { get; set; }
         public string BusinessPartnerName { get; set; }
         public string BPCode { get; set; }
-        public Nullable<int> KeySite { get; set; }
+        public string SiteName { get; set; }
+        public string BuildingName { get; set; }
         public Nullable<int> IsActive { get; set; }
-        public Nullable<int> KeyBuilding { get; set; }
-    
-        public virtual ICollection<MetricConfiguration> MetricConfigurations { get; set; }
     }
 }

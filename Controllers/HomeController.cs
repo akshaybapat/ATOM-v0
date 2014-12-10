@@ -119,7 +119,7 @@ namespace ATOMv0.Controllers
       if (Request.IsAuthenticated)
       {
         FormsAuthentication.SignOut();
-        //ClearSessions();
+        ClearSessions();
       }
 
       return RedirectToAction("Login");

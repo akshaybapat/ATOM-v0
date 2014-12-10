@@ -21,6 +21,13 @@ $.fn.scrollTo = function (target, options, callback) {
 
 
 
+
+function hello() {
+  $('#liLogout').show();
+}
+
+
+
 function gotoURL(url) {
 
   var xhr = new XMLHttpRequest();

@@ -63,6 +63,9 @@
                 </a>
 
             </th>
+          <th>
+            @Html.DisplayNameFor(model => model.First().IsActive)
+          </th>
             <th>
                 Functions
             </th>
@@ -77,6 +80,23 @@
                 <td id="movable">
                     @Html.DisplayFor(modelItem => item.DimRegion.RegionName)
                 </td>
+              <td>
+                @{
+                  
+                  if(item.IsActive==1)
+                  {
+                    <div>True</div>
+                  }
+                   else if(item.IsActive==0)
+                  {
+                    <div>False</div>
+                  }
+                  else
+                  {
+                     <div></div>
+                  }
+                }
+              </td>
                 <td style="font-size:12px">
 
                     <a href="@Url.Action("Edit", new { id = item.id })">

@@ -63,6 +63,9 @@
                 </a>
 
             </th>
+          <th>
+            @Html.DisplayNameFor(model => model.First().IsActive)
+          </th>
             <th>
                 Functions
             </th>
@@ -77,6 +80,32 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.DimCountry.CountryName)
                 </td>
+
+
+
+
+              @if (item.IsActive == 1)
+              {
+
+                <td>
+                  <div>True</div>
+                </td>
+              }
+              else if (item.IsActive == 0)
+              {
+                <td>
+                  <div>False</div>
+                </td>
+              }
+              else
+              {
+                <td>
+                  <div>No Status</div>
+                </td>
+              }
+
+
+
                 <td style="font-size:12px">
 
                     <a href="@Url.Action("Edit", new { id = item.id })">

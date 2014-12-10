@@ -28,7 +28,7 @@
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -183,6 +183,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AuthorizeEnumAttribute.cs" />
     <Compile Include="Models\BucketedStnTypesModel.cs" />
+    <Compile Include="Models\BusinessPartnerCustom.cs" />
     <Compile Include="Models\CISTestResultSet.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -274,6 +275,12 @@
     <Compile Include="Models\fsSite.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GetBusinessPartnerListByID_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetBusinessPartnerList_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\Metric.cs">
@@ -300,6 +307,11 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Model12.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
@@ -358,7 +370,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+      <LastGenOutput>Model12.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <Content Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -485,7 +497,7 @@
     <Content Include="Views\DimBusinessPartners\Delete.cshtml" />
     <Content Include="Views\DimBusinessPartners\Details.cshtml" />
     <Content Include="Views\DimBusinessPartners\Edit.cshtml" />
-    <Content Include="Views\DimBusinessPartners\Index.cshtml" />
+    <Content Include="Views\DimBusinessPartners\Index1.cshtml" />
     <Content Include="Views\DimFinancialCompanies\Create.cshtml" />
     <Content Include="Views\DimFinancialCompanies\Delete.cshtml" />
     <Content Include="Views\DimFinancialCompanies\Details.cshtml" />
@@ -511,6 +523,8 @@
     <Content Include="Views\MetricConfigurations\Edit.cshtml" />
     <Content Include="Views\MetricConfigurations\Index.cshtml" />
     <Content Include="Views\Home\LandingPage.cshtml" />
+    <Content Include="Views\DimBusinessPartners\View2.cshtml" />
+    <Content Include="Views\DimBusinessPartners\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

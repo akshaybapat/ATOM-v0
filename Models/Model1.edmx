@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FFCubeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FFCubeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6002: The table/view 'FFCube2.dbo.DataPollingExecutionTime' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DataPollingExecutionTime">
@@ -39,7 +39,7 @@ warning 6002: The table/view 'FFCube2.dbo.DataPollingExecutionTime' does not hav
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" Nullable="false" />
           <Property Name="BusinessPartnerName" Type="varchar" MaxLength="255" />
           <Property Name="BPCode" Type="nvarchar" MaxLength="50" />
           <Property Name="KeySite" Type="int" />
@@ -65,7 +65,7 @@ warning 6002: The table/view 'FFCube2.dbo.DataPollingExecutionTime' does not hav
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CountryName" Type="varchar" MaxLength="255" />
           <Property Name="KeyRegion" Type="int" />
           <Property Name="IsActive" Type="int" />
@@ -417,6 +417,48 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MetricConfiguration_DimBusinessPartner">
+          <End Role="DimBusinessPartner" Type="Self.DimBusinessPartner" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MetricConfiguration" Type="Self.MetricConfiguration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DimBusinessPartner">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MetricConfiguration">
+              <PropertyRef Name="KeyBusinessPartnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MetricConfiguration_DimFacility">
+          <End Role="DimFacility" Type="Self.DimFacility" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MetricConfiguration" Type="Self.MetricConfiguration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DimFacility">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MetricConfiguration">
+              <PropertyRef Name="KeySiteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MetricConfiguration_DimFFInstance">
+          <End Role="DimFFInstance" Type="Self.DimFFInstance" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MetricConfiguration" Type="Self.MetricConfiguration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DimFFInstance">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MetricConfiguration">
+              <PropertyRef Name="KeyFFInstanceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_MetricConfiguration_Metric">
           <End Role="Metric" Type="Self.Metric" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -469,6 +511,10 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="GetBusinessPartnerList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetBusinessPartnerListByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="BpID" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="FFCubeModelStoreContainer">
           <EntitySet Name="DimBucket" EntityType="Self.DimBucket" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DimBuilding" EntityType="Self.DimBuilding" Schema="dbo" store:Type="Tables" />
@@ -497,107 +543,107 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
           <EntitySet Name="ffStationType" EntityType="Self.ffStationType" Schema="staging" store:Type="Tables" />
           <EntitySet Name="fsSite" EntityType="Self.fsSite" Schema="staging" store:Type="Tables" />
           <EntitySet Name="DataPollingExecutionTime" EntityType="Self.DataPollingExecutionTime" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>
-              SELECT
-              [DataPollingExecutionTime].[id] AS [id],
-              [DataPollingExecutionTime].[Starttime] AS [Starttime],
-              [DataPollingExecutionTime].[Program] AS [Program],
-              [DataPollingExecutionTime].[NoOfRecords] AS [NoOfRecords],
-              [DataPollingExecutionTime].[DatabaseName] AS [DatabaseName],
-              [DataPollingExecutionTime].[Endtime] AS [Endtime]
-              FROM [dbo].[DataPollingExecutionTime] AS [DataPollingExecutionTime]
-            </DefiningQuery>
+            <DefiningQuery>SELECT 
+[DataPollingExecutionTime].[id] AS [id], 
+[DataPollingExecutionTime].[Starttime] AS [Starttime], 
+[DataPollingExecutionTime].[Program] AS [Program], 
+[DataPollingExecutionTime].[NoOfRecords] AS [NoOfRecords], 
+[DataPollingExecutionTime].[DatabaseName] AS [DatabaseName], 
+[DataPollingExecutionTime].[Endtime] AS [Endtime]
+FROM [dbo].[DataPollingExecutionTime] AS [DataPollingExecutionTime]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="DimModule" EntityType="Self.DimModule" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>
-              SELECT
-              [DimModule].[id] AS [id],
-              [DimModule].[ModuleName] AS [ModuleName],
-              [DimModule].[KeyBuilding] AS [KeyBuilding]
-              FROM [dbo].[DimModule] AS [DimModule]
-            </DefiningQuery>
+            <DefiningQuery>SELECT 
+[DimModule].[id] AS [id], 
+[DimModule].[ModuleName] AS [ModuleName], 
+[DimModule].[KeyBuilding] AS [KeyBuilding]
+FROM [dbo].[DimModule] AS [DimModule]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="FactffCompletions" EntityType="Self.FactffCompletions" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>
-              SELECT
-              [FactffCompletions].[id] AS [id],
-              [FactffCompletions].[KeyStartTime] AS [KeyStartTime],
-              [FactffCompletions].[KeyFFInstance] AS [KeyFFInstance],
-              [FactffCompletions].[OrderTotal] AS [OrderTotal],
-              [FactffCompletions].[InProgress] AS [InProgress],
-              [FactffCompletions].[Finished] AS [Finished],
-              [FactffCompletions].[DueDate] AS [DueDate],
-              [FactffCompletions].[Color] AS [Color],
-              [FactffCompletions].[ProductionOrder] AS [ProductionOrder],
-              [FactffCompletions].[ProductionLine] AS [ProductionLine]
-              FROM [dbo].[FactffCompletions] AS [FactffCompletions]
-            </DefiningQuery>
+            <DefiningQuery>SELECT 
+[FactffCompletions].[id] AS [id], 
+[FactffCompletions].[KeyStartTime] AS [KeyStartTime], 
+[FactffCompletions].[KeyFFInstance] AS [KeyFFInstance], 
+[FactffCompletions].[OrderTotal] AS [OrderTotal], 
+[FactffCompletions].[InProgress] AS [InProgress], 
+[FactffCompletions].[Finished] AS [Finished], 
+[FactffCompletions].[DueDate] AS [DueDate], 
+[FactffCompletions].[Color] AS [Color], 
+[FactffCompletions].[ProductionOrder] AS [ProductionOrder], 
+[FactffCompletions].[ProductionLine] AS [ProductionLine]
+FROM [dbo].[FactffCompletions] AS [FactffCompletions]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="FactffDefect" EntityType="Self.FactffDefect" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>
-              SELECT
-              [FactffDefect].[id] AS [id],
-              [FactffDefect].[KeyProductNumber] AS [KeyProductNumber],
-              [FactffDefect].[KeyStartTime] AS [KeyStartTime],
-              [FactffDefect].[KeyStationType] AS [KeyStationType],
-              [FactffDefect].[KeyStationName] AS [KeyStationName],
-              [FactffDefect].[Revision] AS [Revision],
-              [FactffDefect].[IsUnit] AS [IsUnit],
-              [FactffDefect].[DefectCode] AS [DefectCode],
-              [FactffDefect].[SerialNo] AS [SerialNo],
-              [FactffDefect].[ProductionOrderNo] AS [ProductionOrderNo],
-              [FactffDefect].[FFInstance] AS [FFInstance],
-              [FactffDefect].[ComponentNo] AS [ComponentNo],
-              [FactffDefect].[KeyDefectTime] AS [KeyDefectTime],
-              [FactffDefect].[KeyTestDate] AS [KeyTestDate],
-              [FactffDefect].[DefectLocation] AS [DefectLocation],
-              [FactffDefect].[ComponentDescription] AS [ComponentDescription],
-              [FactffDefect].[ProductionLine] AS [ProductionLine]
-              FROM [dbo].[FactffDefect] AS [FactffDefect]
-            </DefiningQuery>
+            <DefiningQuery>SELECT 
+[FactffDefect].[id] AS [id], 
+[FactffDefect].[KeyProductNumber] AS [KeyProductNumber], 
+[FactffDefect].[KeyStartTime] AS [KeyStartTime], 
+[FactffDefect].[KeyStationType] AS [KeyStationType], 
+[FactffDefect].[KeyStationName] AS [KeyStationName], 
+[FactffDefect].[Revision] AS [Revision], 
+[FactffDefect].[IsUnit] AS [IsUnit], 
+[FactffDefect].[DefectCode] AS [DefectCode], 
+[FactffDefect].[SerialNo] AS [SerialNo], 
+[FactffDefect].[ProductionOrderNo] AS [ProductionOrderNo], 
+[FactffDefect].[FFInstance] AS [FFInstance], 
+[FactffDefect].[ComponentNo] AS [ComponentNo], 
+[FactffDefect].[KeyDefectTime] AS [KeyDefectTime], 
+[FactffDefect].[KeyTestDate] AS [KeyTestDate], 
+[FactffDefect].[DefectLocation] AS [DefectLocation], 
+[FactffDefect].[ComponentDescription] AS [ComponentDescription], 
+[FactffDefect].[ProductionLine] AS [ProductionLine]
+FROM [dbo].[FactffDefect] AS [FactffDefect]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="RTYbyDay" EntityType="Self.RTYbyDay" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>
-              SELECT
-              [RTYbyDay].[RTYDate] AS [RTYDate],
-              [RTYbyDay].[BusinessPartner] AS [BusinessPartner],
-              [RTYbyDay].[StationBucket] AS [StationBucket],
-              [RTYbyDay].[PartFamilyID] AS [PartFamilyID],
-              [RTYbyDay].[RTY] AS [RTY],
-              [RTYbyDay].[RTYYear] AS [RTYYear],
-              [RTYbyDay].[RTYMonth] AS [RTYMonth],
-              [RTYbyDay].[RTYDay] AS [RTYDay],
-              [RTYbyDay].[MonthNo] AS [MonthNo],
-              [RTYbyDay].[SiteID] AS [SiteID],
-              [RTYbyDay].[ProdVol] AS [ProdVol],
-              [RTYbyDay].[TopFPYStationName5] AS [TopFPYStationName5],
-              [RTYbyDay].[TopFPY5] AS [TopFPY5],
-              [RTYbyDay].[TopFPYStationName4] AS [TopFPYStationName4],
-              [RTYbyDay].[TopFPY4] AS [TopFPY4],
-              [RTYbyDay].[TopFPYStationName3] AS [TopFPYStationName3],
-              [RTYbyDay].[TopFPY3] AS [TopFPY3],
-              [RTYbyDay].[TopFPYStationName2] AS [TopFPYStationName2],
-              [RTYbyDay].[TopFPY2] AS [TopFPY2],
-              [RTYbyDay].[TopFPYStationName1] AS [TopFPYStationName1],
-              [RTYbyDay].[TopFPY1] AS [TopFPY1]
-              FROM [dbo].[RTYbyDay] AS [RTYbyDay]
-            </DefiningQuery>
+            <DefiningQuery>SELECT 
+[RTYbyDay].[RTYDate] AS [RTYDate], 
+[RTYbyDay].[BusinessPartner] AS [BusinessPartner], 
+[RTYbyDay].[StationBucket] AS [StationBucket], 
+[RTYbyDay].[PartFamilyID] AS [PartFamilyID], 
+[RTYbyDay].[RTY] AS [RTY], 
+[RTYbyDay].[RTYYear] AS [RTYYear], 
+[RTYbyDay].[RTYMonth] AS [RTYMonth], 
+[RTYbyDay].[RTYDay] AS [RTYDay], 
+[RTYbyDay].[MonthNo] AS [MonthNo], 
+[RTYbyDay].[SiteID] AS [SiteID], 
+[RTYbyDay].[ProdVol] AS [ProdVol], 
+[RTYbyDay].[TopFPYStationName5] AS [TopFPYStationName5], 
+[RTYbyDay].[TopFPY5] AS [TopFPY5], 
+[RTYbyDay].[TopFPYStationName4] AS [TopFPYStationName4], 
+[RTYbyDay].[TopFPY4] AS [TopFPY4], 
+[RTYbyDay].[TopFPYStationName3] AS [TopFPYStationName3], 
+[RTYbyDay].[TopFPY3] AS [TopFPY3], 
+[RTYbyDay].[TopFPYStationName2] AS [TopFPYStationName2], 
+[RTYbyDay].[TopFPY2] AS [TopFPY2], 
+[RTYbyDay].[TopFPYStationName1] AS [TopFPYStationName1], 
+[RTYbyDay].[TopFPY1] AS [TopFPY1]
+FROM [dbo].[RTYbyDay] AS [RTYbyDay]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="SpeedMeasure" EntityType="Self.SpeedMeasure" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>
-              SELECT
-              [SpeedMeasure].[id] AS [id],
-              [SpeedMeasure].[Starttime] AS [Starttime],
-              [SpeedMeasure].[Endtime] AS [Endtime],
-              [SpeedMeasure].[NoRecords] AS [NoRecords],
-              [SpeedMeasure].[FromDate] AS [FromDate],
-              [SpeedMeasure].[ToDate] AS [ToDate]
-              FROM [dbo].[SpeedMeasure] AS [SpeedMeasure]
-            </DefiningQuery>
+            <DefiningQuery>SELECT 
+[SpeedMeasure].[id] AS [id], 
+[SpeedMeasure].[Starttime] AS [Starttime], 
+[SpeedMeasure].[Endtime] AS [Endtime], 
+[SpeedMeasure].[NoRecords] AS [NoRecords], 
+[SpeedMeasure].[FromDate] AS [FromDate], 
+[SpeedMeasure].[ToDate] AS [ToDate]
+FROM [dbo].[SpeedMeasure] AS [SpeedMeasure]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_CostCenter" Association="Self.FK_CostCenter">
             <End Role="DimCostCenter" EntitySet="DimCostCenter" />
             <End Role="DimBusinessUnit" EntitySet="DimBusinessUnit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MetricConfiguration_DimBusinessPartner" Association="Self.FK_MetricConfiguration_DimBusinessPartner">
+            <End Role="DimBusinessPartner" EntitySet="DimBusinessPartner" />
+            <End Role="MetricConfiguration" EntitySet="MetricConfiguration" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MetricConfiguration_DimFacility" Association="Self.FK_MetricConfiguration_DimFacility">
+            <End Role="DimFacility" EntitySet="DimFacility" />
+            <End Role="MetricConfiguration" EntitySet="MetricConfiguration" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MetricConfiguration_DimFFInstance" Association="Self.FK_MetricConfiguration_DimFFInstance">
+            <End Role="DimFFInstance" EntitySet="DimFFInstance" />
+            <End Role="MetricConfiguration" EntitySet="MetricConfiguration" />
           </AssociationSet>
           <AssociationSet Name="FK_MetricConfiguration_Metric" Association="Self.FK_MetricConfiguration_Metric">
             <End Role="Metric" EntitySet="Metric" />
@@ -616,8 +662,7 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
             <End Role="FactffFirstPass" EntitySet="FactffFirstPass" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FFCubeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -640,23 +685,7 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
           <Property Name="KeyFacility" Type="Int32" />
           <NavigationProperty Name="DimFacility" Relationship="Self.FK_DimBuilding_DimFacility" FromRole="DimBuilding" ToRole="DimFacility" />
           <NavigationProperty Name="DimModules" Relationship="Self.FK_DimModule_DimBuilding" FromRole="DimBuilding" ToRole="DimModule" />
-          <NavigationProperty Name="DimBusinessPartners" Relationship="FFCubeModel.FK_BusinessPartner_DimBuilding" FromRole="DimBuilding" ToRole="DimBusinessPartner" />
           <Property Name="IsActive" Type="Int32" />
-        </EntityType>
-        <EntityType Name="DimBusinessPartner">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BusinessPartnerName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="BPCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="DimProductLines" Relationship="Self.FK_BusinessPartner" FromRole="DimBusinessPartner" ToRole="DimProductLine" />
-          <NavigationProperty Name="MetricConfigurations" Relationship="FFCubeModel.FK_MetricConfiguration_DimBusinessPartner" FromRole="DimBusinessPartner" ToRole="MetricConfiguration" />
-          <Property Name="KeySite" Type="Int32" />
-          <Property Name="IsActive" Type="Int32" />
-          <Property Name="KeyBuilding" Type="Int32" Nullable="true" />
-          <NavigationProperty Name="DimBuilding" Relationship="FFCubeModel.FK_BusinessPartner_DimBuilding" FromRole="DimBusinessPartner" ToRole="DimBuilding" />
-          <NavigationProperty Name="DimFacility" Relationship="FFCubeModel.FK_BusinessPartner_DimFacility" FromRole="DimBusinessPartner" ToRole="DimFacility" />
         </EntityType>
         <EntityType Name="DimBusinessUnit">
           <Key>
@@ -711,7 +740,6 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
           <NavigationProperty Name="DimBuildings" Relationship="Self.FK_DimBuilding_DimFacility" FromRole="DimFacility" ToRole="DimBuilding" />
           <NavigationProperty Name="DimCountry" Relationship="Self.FK_Country" FromRole="DimFacility" ToRole="DimCountry" />
           <NavigationProperty Name="MetricConfigurations" Relationship="FFCubeModel.FK_MetricConfiguration_DimFacility" FromRole="DimFacility" ToRole="MetricConfiguration" />
-          <NavigationProperty Name="DimBusinessPartners" Relationship="FFCubeModel.FK_BusinessPartner_DimFacility" FromRole="DimFacility" ToRole="DimBusinessPartner" />
           <Property Name="IsActive" Type="Int32" />
         </EntityType>
         <EntityType Name="DimFFInstance">
@@ -787,7 +815,6 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProductLineName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="KeyBusinessPartner" Type="Int32" />
-          <NavigationProperty Name="DimBusinessPartner" Relationship="Self.FK_BusinessPartner" FromRole="DimProductLine" ToRole="DimBusinessPartner" />
           <NavigationProperty Name="DimProductNumbers" Relationship="Self.FK_ProductLine" FromRole="DimProductLine" ToRole="DimProductNumber" />
         </EntityType>
         <EntityType Name="DimProductNumber">
@@ -1040,18 +1067,6 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BusinessPartner">
-          <End Role="DimBusinessPartner" Type="Self.DimBusinessPartner" Multiplicity="0..1" />
-          <End Role="DimProductLine" Type="Self.DimProductLine" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DimBusinessPartner">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="DimProductLine">
-              <PropertyRef Name="KeyBusinessPartner" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CostCenter">
           <End Role="DimCostCenter" Type="Self.DimCostCenter" Multiplicity="0..1" />
           <End Role="DimBusinessUnit" Type="Self.DimBusinessUnit" Multiplicity="*" />
@@ -1151,7 +1166,6 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
         <EntityContainer Name="FFCube2Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="DimBuckets" EntityType="Self.DimBucket" />
           <EntitySet Name="DimBuildings" EntityType="Self.DimBuilding" />
-          <EntitySet Name="DimBusinessPartners" EntityType="Self.DimBusinessPartner" />
           <EntitySet Name="DimBusinessUnits" EntityType="Self.DimBusinessUnit" />
           <EntitySet Name="DimCostCenters" EntityType="Self.DimCostCenter" />
           <EntitySet Name="DimCountries" EntityType="Self.DimCountry" />
@@ -1193,10 +1207,6 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
             <End Role="DimBuilding" EntitySet="DimBuildings" />
             <End Role="DimModule" EntitySet="DimModules" />
           </AssociationSet>
-          <AssociationSet Name="FK_BusinessPartner" Association="Self.FK_BusinessPartner">
-            <End Role="DimBusinessPartner" EntitySet="DimBusinessPartners" />
-            <End Role="DimProductLine" EntitySet="DimProductLines" />
-          </AssociationSet>
           <AssociationSet Name="FK_CostCenter" Association="Self.FK_CostCenter">
             <End Role="DimCostCenter" EntitySet="DimCostCenters" />
             <End Role="DimBusinessUnit" EntitySet="DimBusinessUnits" />
@@ -1233,10 +1243,6 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
           <EntitySet Name="MetricRoleTypes" EntityType="FFCubeModel.MetricRoleType" />
           <EntitySet Name="Users" EntityType="FFCubeModel.User" />
           <EntitySet Name="MetricConfigurations" EntityType="FFCubeModel.MetricConfiguration" />
-          <AssociationSet Name="FK_MetricConfiguration_DimBusinessPartner" Association="FFCubeModel.FK_MetricConfiguration_DimBusinessPartner">
-            <End Role="DimBusinessPartner" EntitySet="DimBusinessPartners" />
-            <End Role="MetricConfiguration" EntitySet="MetricConfigurations" />
-          </AssociationSet>
           <AssociationSet Name="FK_MetricConfiguration_DimFacility" Association="FFCubeModel.FK_MetricConfiguration_DimFacility">
             <End Role="DimFacility" EntitySet="DimFacilities" />
             <End Role="MetricConfiguration" EntitySet="MetricConfigurations" />
@@ -1257,13 +1263,14 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
             <End Role="DimFFInstance" EntitySet="DimFFInstances" />
             <End Role="DimStationType" EntitySet="DimStationTypes" />
           </AssociationSet>
-          <AssociationSet Name="FK_BusinessPartner_DimBuilding" Association="FFCubeModel.FK_BusinessPartner_DimBuilding">
-            <End Role="DimBuilding" EntitySet="DimBuildings" />
+          <FunctionImport Name="GetBusinessPartnerList" ReturnType="Collection(FFCubeModel.GetBusinessPartnerList_Result)" />
+          <FunctionImport Name="GetBusinessPartnerListByID" ReturnType="Collection(FFCubeModel.GetBusinessPartnerListByID_Result)">
+          <Parameter Name="BpID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="DimBusinessPartners" EntityType="FFCubeModel.DimBusinessPartner" />
+          <AssociationSet Name="FK_MetricConfiguration_DimBusinessPartner" Association="FFCubeModel.FK_MetricConfiguration_DimBusinessPartner">
             <End Role="DimBusinessPartner" EntitySet="DimBusinessPartners" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BusinessPartner_DimFacility" Association="FFCubeModel.FK_BusinessPartner_DimFacility">
-            <End Role="DimFacility" EntitySet="DimFacilities" />
-            <End Role="DimBusinessPartner" EntitySet="DimBusinessPartners" />
+            <End Role="MetricConfiguration" EntitySet="MetricConfigurations" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Metric">
@@ -1317,28 +1324,14 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
           <Property Name="MetricManagerValidationStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="MetricOwnerValidationStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="DimBusinessPartner" Relationship="FFCubeModel.FK_MetricConfiguration_DimBusinessPartner" FromRole="MetricConfiguration" ToRole="DimBusinessPartner" />
           <NavigationProperty Name="DimFacility" Relationship="FFCubeModel.FK_MetricConfiguration_DimFacility" FromRole="MetricConfiguration" ToRole="DimFacility" />
           <NavigationProperty Name="DimFFInstance" Relationship="FFCubeModel.FK_MetricConfiguration_DimFFInstance" FromRole="MetricConfiguration" ToRole="DimFFInstance" />
           <NavigationProperty Name="Metric" Relationship="FFCubeModel.FK_MetricConfiguration_Metric" FromRole="MetricConfiguration" ToRole="Metric" />
           <NavigationProperty Name="MetricRoleType" Relationship="FFCubeModel.FK_MetricConfiguration_MetricRoleType" FromRole="MetricConfiguration" ToRole="MetricRoleType" />
-          <Property Name="MetricManager" Type="String" Nullable="true" />
-          <Property Name="MetricOwner" Type="String" Nullable="true" />
+          <Property Name="MetricManager" Type="String" Nullable="true" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <Property Name="MetricOwner" Type="String" Nullable="true" MaxLength="Max" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="DimBusinessPartner" Relationship="FFCubeModel.FK_MetricConfiguration_DimBusinessPartner" FromRole="MetricConfiguration" ToRole="DimBusinessPartner" />
         </EntityType>
-        <Association Name="FK_MetricConfiguration_DimBusinessPartner">
-          <End Type="FFCubeModel.DimBusinessPartner" Role="DimBusinessPartner" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="FFCubeModel.MetricConfiguration" Role="MetricConfiguration" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DimBusinessPartner">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="MetricConfiguration">
-              <PropertyRef Name="KeyBusinessPartnerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_MetricConfiguration_DimFacility">
           <End Type="FFCubeModel.DimFacility" Role="DimFacility" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -1409,30 +1402,48 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BusinessPartner_DimBuilding">
-          <End Type="FFCubeModel.DimBuilding" Role="DimBuilding" Multiplicity="0..1" />
-          <End Type="FFCubeModel.DimBusinessPartner" Role="DimBusinessPartner" Multiplicity="*" />
+        <ComplexType Name="GetBusinessPartnerListByID_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="BusinessPartnerName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="BPCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="SiteName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="BuildingName" Nullable="true" MaxLength="255" />
+          <Property Type="Int32" Name="IsActive" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="DimBusinessPartner">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="BusinessPartnerName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="BPCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="KeySite" Type="Int32" />
+          <Property Name="IsActive" Type="Int32" />
+          <Property Name="KeyBuilding" Type="Int32" />
+          <NavigationProperty Name="MetricConfigurations" Relationship="FFCubeModel.FK_MetricConfiguration_DimBusinessPartner" FromRole="DimBusinessPartner" ToRole="MetricConfiguration" />
+        </EntityType>
+        <Association Name="FK_MetricConfiguration_DimBusinessPartner">
+          <End Type="FFCubeModel.DimBusinessPartner" Role="DimBusinessPartner" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="FFCubeModel.MetricConfiguration" Role="MetricConfiguration" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="DimBuilding">
+            <Principal Role="DimBusinessPartner">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="DimBusinessPartner">
-              <PropertyRef Name="KeyBuilding" />
+            <Dependent Role="MetricConfiguration">
+              <PropertyRef Name="KeyBusinessPartnerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BusinessPartner_DimFacility">
-          <End Type="FFCubeModel.DimFacility" Role="DimFacility" Multiplicity="0..1" />
-          <End Type="FFCubeModel.DimBusinessPartner" Role="DimBusinessPartner" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DimFacility">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="DimBusinessPartner">
-              <PropertyRef Name="KeySite" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <ComplexType Name="GetBusinessPartnerList_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="BusinessPartnerName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="BPCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="SiteName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="BuildingName" Nullable="true" MaxLength="255" />
+          <Property Type="Int32" Name="IsActive" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1455,18 +1466,6 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
                 <ScalarProperty Name="KeyFacility" ColumnName="KeyFacility" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DimBusinessPartners">
-            <EntityTypeMapping TypeName="FFCubeModel.DimBusinessPartner">
-              <MappingFragment StoreEntitySet="DimBusinessPartner">
-                <ScalarProperty Name="KeyBuilding" ColumnName="KeyBuilding" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="KeySite" ColumnName="KeySite" />
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="BusinessPartnerName" ColumnName="BusinessPartnerName" />
-                <ScalarProperty Name="BPCode" ColumnName="BPCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1854,6 +1853,42 @@ warning 6002: The table/view 'FFCube2.dbo.SpeedMeasure' does not have a primary 
                 <ScalarProperty Name="KeySiteID" ColumnName="KeySiteID" />
                 <ScalarProperty Name="KeyMetricRoleTypeID" ColumnName="KeyMetricRoleTypeID" />
                 <ScalarProperty Name="KeyMetricID" ColumnName="KeyMetricID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetBusinessPartnerList" FunctionName="FFCubeModel.Store.GetBusinessPartnerList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FFCubeModel.GetBusinessPartnerList_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="BusinessPartnerName" ColumnName="BusinessPartnerName" />
+                <ScalarProperty Name="BPCode" ColumnName="BPCode" />
+                <ScalarProperty Name="SiteName" ColumnName="SiteName" />
+                <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetBusinessPartnerListByID" FunctionName="FFCubeModel.Store.GetBusinessPartnerListByID">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FFCubeModel.GetBusinessPartnerListByID_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="BusinessPartnerName" ColumnName="BusinessPartnerName" />
+                <ScalarProperty Name="BPCode" ColumnName="BPCode" />
+                <ScalarProperty Name="SiteName" ColumnName="SiteName" />
+                <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="DimBusinessPartners">
+            <EntityTypeMapping TypeName="FFCubeModel.DimBusinessPartner">
+              <MappingFragment StoreEntitySet="DimBusinessPartner">
+                <ScalarProperty Name="KeyBuilding" ColumnName="KeyBuilding" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="KeySite" ColumnName="KeySite" />
+                <ScalarProperty Name="BPCode" ColumnName="BPCode" />
+                <ScalarProperty Name="BusinessPartnerName" ColumnName="BusinessPartnerName" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

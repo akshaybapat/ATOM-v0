@@ -32,10 +32,10 @@ namespace ATOMv0.Models
         public string MetricManager { get; set; }
         public string MetricOwner { get; set; }
     
-        public virtual DimBusinessPartner DimBusinessPartner { get; set; }
         public virtual DimFacility DimFacility { get; set; }
         public virtual DimFFInstance DimFFInstance { get; set; }
         public virtual Metric Metric { get; set; }
         public virtual MetricRoleType MetricRoleType { get; set; }
+        public virtual DimBusinessPartner DimBusinessPartner { get; set; }
     }
 }
