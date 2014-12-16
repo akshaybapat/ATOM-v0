@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://flexware.flextronics.com/ws/client/authentication" xmlns:ns2="http://flexware.flextronics.com/ws/client/faults/" name="authenticationPort" targetNamespace="http://flexware.flextronics.com/ws/client/authentication" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema targetNamespace="http://flexware.flextronics.com/ws/client/faults/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="AccessDenied">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="message" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="InvalidCredentials">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="message" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="InvalidRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="message" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="InvalidToken">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="message" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ServiceFault">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+    <xs:schema xmlns:tns="http://flexware.flextronics.com/ws/client/authentication" elementFormDefault="qualified" targetNamespace="http://flexware.flextronics.com/ws/client/authentication" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="authenticate">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element form="unqualified" name="credentials" type="tns:credentials-ws" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="authenticateResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element form="unqualified" name="flexwareToken" type="tns:flexware-token-ws" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="currentReleaseRequest">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element form="unqualified" name="flexwareToken" type="tns:flexware-token-ws" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="currentReleaseResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element form="unqualified" name="currentRelease" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getMasterData">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element form="unqualified" name="flexwareToken" type="tns:flexware-token-ws" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getMasterDataResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element form="unqualified" name="masterData" type="tns:master-data-ws" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getSubstituteUser">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element form="unqualified" name="flexwareToken" type="tns:flexware-token-ws" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getSubstituteUserResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" form="unqualified" name="substituteUser" type="tns:user-master-ws" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getSubstitutedUsers">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element form="unqualified" name="flexwareToken" type="tns:flexware-token-ws" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getSubstitutedUsersResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" form="unqualified" name="substitutedUsers" type="tns:user-master-ws" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getUserRoles">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element form="unqualified" name="flexwareToken" type="tns:flexware-token-ws" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getUserRolesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element form="unqualified" name="userRoles" type="tns:user-roles-ws" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="flexware-token-ws">
+        <xs:sequence>
+          <xs:element name="token" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="user-master-ws">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="userId" type="xs:string" />
+          <xs:element name="userName" type="xs:string" />
+          <xs:element minOccurs="0" name="firstName" type="xs:string" />
+          <xs:element minOccurs="0" name="lastName" type="xs:string" />
+          <xs:element minOccurs="0" name="email" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="credentials-ws">
+        <xs:sequence>
+          <xs:element name="username" type="xs:string" />
+          <xs:element name="password" type="xs:string" />
+          <xs:element name="solutionCode" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="master-data-ws">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="masterData" nillable="true" type="tns:master-data-element-ws" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="master-data-element-ws">
+        <xs:sequence>
+          <xs:element name="code" type="xs:string" />
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="objects" nillable="true" type="tns:master-data-object-ws" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="master-data-object-ws">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string" />
+          <xs:element name="code" type="xs:string" />
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+          <xs:element minOccurs="0" name="description" type="xs:string" />
+          <xs:element minOccurs="0" name="active" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="user-roles-ws">
+        <xs:sequence>
+          <xs:element name="userMaster" type="tns:user-master-ws" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="roles" nillable="true" type="tns:solution-role-ws" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="solution-role-ws">
+        <xs:sequence>
+          <xs:element name="code" type="xs:string" />
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="master-role-ws">
+        <xs:sequence>
+          <xs:element name="code" type="xs:string" />
+          <xs:element minOccurs="0" name="name" type="xs:string" />
+          <xs:element maxOccurs="unbounded" name="solution-roles" type="tns:solution-role-ws" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getSubstituteUser">
+    <wsdl:part name="parameters" element="ns1:getSubstituteUser" />
+  </wsdl:message>
+  <wsdl:message name="getSubstituteUserResponse">
+    <wsdl:part name="parameters" element="ns1:getSubstituteUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="authenticateResponse">
+    <wsdl:part name="parameters" element="ns1:authenticateResponse" />
+  </wsdl:message>
+  <wsdl:message name="getMasterDataResponse">
+    <wsdl:part name="parameters" element="ns1:getMasterDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="authenticate">
+    <wsdl:part name="parameters" element="ns1:authenticate" />
+  </wsdl:message>
+  <wsdl:message name="InvalidCredentialsFault">
+    <wsdl:part name="InvalidCredentialsFault" element="ns2:InvalidCredentials" />
+  </wsdl:message>
+  <wsdl:message name="AccessDeniedFault">
+    <wsdl:part name="AccessDeniedFault" element="ns2:AccessDenied" />
+  </wsdl:message>
+  <wsdl:message name="getMasterData">
+    <wsdl:part name="parameters" element="ns1:getMasterData" />
+  </wsdl:message>
+  <wsdl:message name="getUserRoles">
+    <wsdl:part name="parameters" element="ns1:getUserRoles" />
+  </wsdl:message>
+  <wsdl:message name="getSubstitutedUsersResponse">
+    <wsdl:part name="parameters" element="ns1:getSubstitutedUsersResponse" />
+  </wsdl:message>
+  <wsdl:message name="getUserRolesResponse">
+    <wsdl:part name="parameters" element="ns1:getUserRolesResponse" />
+  </wsdl:message>
+  <wsdl:message name="InvalidRequestFault">
+    <wsdl:part name="InvalidRequestFault" element="ns2:InvalidRequest" />
+  </wsdl:message>
+  <wsdl:message name="getCurrentRelease">
+    <wsdl:part name="flexwareToken" element="ns1:currentReleaseRequest" />
+  </wsdl:message>
+  <wsdl:message name="ServiceFault_Exception">
+    <wsdl:part name="ServiceFault_Exception" element="ns2:ServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="getSubstitutedUsers">
+    <wsdl:part name="parameters" element="ns1:getSubstitutedUsers" />
+  </wsdl:message>
+  <wsdl:message name="getCurrentReleaseResponse">
+    <wsdl:part name="currentRelease" element="ns1:currentReleaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="InvalidTokenFault">
+    <wsdl:part name="InvalidTokenFault" element="ns2:InvalidToken" />
+  </wsdl:message>
+  <wsdl:portType name="authenticationPort">
+    <wsdl:operation name="getSubstituteUser">
+      <wsdl:input name="getSubstituteUser" message="ns1:getSubstituteUser" />
+      <wsdl:output name="getSubstituteUserResponse" message="ns1:getSubstituteUserResponse" />
+      <wsdl:fault name="InvalidRequestFault" message="ns1:InvalidRequestFault" />
+      <wsdl:fault name="InvalidTokenFault" message="ns1:InvalidTokenFault" />
+      <wsdl:fault name="ServiceFault_Exception" message="ns1:ServiceFault_Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="authenticate">
+      <wsdl:input name="authenticate" message="ns1:authenticate" />
+      <wsdl:output name="authenticateResponse" message="ns1:authenticateResponse" />
+      <wsdl:fault name="InvalidCredentialsFault" message="ns1:InvalidCredentialsFault" />
+      <wsdl:fault name="InvalidRequestFault" message="ns1:InvalidRequestFault" />
+      <wsdl:fault name="AccessDeniedFault" message="ns1:AccessDeniedFault" />
+      <wsdl:fault name="ServiceFault_Exception" message="ns1:ServiceFault_Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="getCurrentRelease">
+      <wsdl:input name="getCurrentRelease" message="ns1:getCurrentRelease" />
+      <wsdl:output name="getCurrentReleaseResponse" message="ns1:getCurrentReleaseResponse" />
+      <wsdl:fault name="InvalidRequestFault" message="ns1:InvalidRequestFault" />
+      <wsdl:fault name="InvalidTokenFault" message="ns1:InvalidTokenFault" />
+      <wsdl:fault name="ServiceFault_Exception" message="ns1:ServiceFault_Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="getMasterData">
+      <wsdl:input name="getMasterData" message="ns1:getMasterData" />
+      <wsdl:output name="getMasterDataResponse" message="ns1:getMasterDataResponse" />
+      <wsdl:fault name="InvalidRequestFault" message="ns1:InvalidRequestFault" />
+      <wsdl:fault name="InvalidTokenFault" message="ns1:InvalidTokenFault" />
+      <wsdl:fault name="ServiceFault_Exception" message="ns1:ServiceFault_Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="getUserRoles">
+      <wsdl:input name="getUserRoles" message="ns1:getUserRoles" />
+      <wsdl:output name="getUserRolesResponse" message="ns1:getUserRolesResponse" />
+      <wsdl:fault name="InvalidRequestFault" message="ns1:InvalidRequestFault" />
+      <wsdl:fault name="InvalidTokenFault" message="ns1:InvalidTokenFault" />
+      <wsdl:fault name="ServiceFault_Exception" message="ns1:ServiceFault_Exception" />
+    </wsdl:operation>
+    <wsdl:operation name="getSubstitutedUsers">
+      <wsdl:input name="getSubstitutedUsers" message="ns1:getSubstitutedUsers" />
+      <wsdl:output name="getSubstitutedUsersResponse" message="ns1:getSubstitutedUsersResponse" />
+      <wsdl:fault name="InvalidRequestFault" message="ns1:InvalidRequestFault" />
+      <wsdl:fault name="InvalidTokenFault" message="ns1:InvalidTokenFault" />
+      <wsdl:fault name="ServiceFault_Exception" message="ns1:ServiceFault_Exception" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

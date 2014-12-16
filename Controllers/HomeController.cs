@@ -1,6 +1,5 @@
-﻿using ATOMv0.Models;
-using Flextronics.QMSCC.Commons.SystemIntegrations.FlexWare.AuthenticationServices;
-using Flextronics.QMSCC.Commons.SystemIntegrations.FlexWare.Services;
+﻿using ATOMv0.AuthenticationService;
+using ATOMv0.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -25,22 +24,6 @@ namespace ATOMv0.Controllers
 
       if (userRoles != null)
       {
-
-        //if (userRoles.roles[0].name == AuthorizeEnumAttribute.GetEnumDescription(RolesEnum.Roles.AtomAdministrator))
-        //{
-
-        //  return RedirectToAction("Index", "FFSite");
-
-        //}
-        //else if (userRoles.roles[0].name == AuthorizeEnumAttribute.GetEnumDescription(RolesEnum.Roles.SiteAdministrator))
-        //{
-        //  return RedirectToAction("Index", "FFSite");
-        //}
-        //else
-        //{
-        //  return RedirectToAction("Login");
-        //}
-
         if (userRoles.roles.Count() > 0)
         {
           foreach (var item in userRoles.roles)
@@ -106,7 +89,6 @@ namespace ATOMv0.Controllers
         return RedirectToAction("Index");
 
       }
-
       else
       {
         ModelState.AddModelError("Error", "Please enter valid user name or password");
@@ -144,84 +126,21 @@ namespace ATOMv0.Controllers
         bool isValidUser = false;
         string Roleserrors = string.Empty;
         string MasterDataErrors = string.Empty;
-        string url = ConfigurationManager.AppSettings["FlexwareUrlQA"];
         string strSolutionCode = Convert.ToString(ConfigurationManager.AppSettings["SolutionCode"]);
+        string strMasterDataAtomSite = Convert.ToString(ConfigurationManager.AppSettings["ATOMSITE"]);
 
+        #region Authentication Service
 
-
-        #region Authentication Service DONT DELETE
-
-
-        //ATOMv0.AuthService.authenticationPortClient cl = new AuthService.authenticationPortClient();
-        //ATOMv0.AuthService.credentialsws crd = new AuthService.credentialsws();
-        //crd.username = model.UserName;
-        //crd.password = model.Password;
-        //crd.solutionCode = strSolutionCode;
-        //ATOMv0.AuthService.authenticate auth = new AuthService.authenticate();
-        //auth.credentials = crd;
-
-        //ATOMv0.AuthService.flexwaretokenws fxToken = new AuthService.flexwaretokenws();
-
-        //fxToken = cl.authenticate(crd);
-
-        //var userRoles = cl.getUserRoles(fxToken);
-
-        #endregion
-
-
-        #region Request to Role service DONT DELETE
-
-        //NOTE:- DONT DELETE THIS IT WILL REPLACE WITH REAL DATA
-
-        //ATOMv0.ServiceReference1.importUserRolePortClient clientImportRole = new ServiceReference1.importUserRolePortClient();
-        //ATOMv0.ServiceReference1.importUserRoleData importRoleData = new ServiceReference1.importUserRoleData();
-        //ATOMv0.ServiceReference1.flexwaretokenws impDataToken = new ServiceReference1.flexwaretokenws();
-        //impDataToken.token = fxToken.token;
-
-        //ATOMv0.ServiceReference1.usermasterws impUserMaster = new ATOMv0.ServiceReference1.usermasterws();
-        //impUserMaster.userName = model.UserName;
-
-        //ATOMv0.ServiceReference1.masterrolews impMasterRole = new ServiceReference1.masterrolews();
-        //impMasterRole.code = "METRIC01";
-
-        //ATOMv0.ServiceReference1.solutionrolews[] impSolutionRole = new ATOMv0.ServiceReference1.solutionrolews[]
-        //{
-        //    new ATOMv0.ServiceReference1.solutionrolews{ code = "METRIC01"}
-        //};
-
-        //impMasterRole.solutionroles = impSolutionRole;
-
-        //ATOMv0.ServiceReference1.masterdataobjectws impMasterData = new ATOMv0.ServiceReference1.masterdataobjectws();
-        //impMasterData.code = "ATOMSITE";
-
-        //ATOMv0.ServiceReference1.masterdataelementws subMasteraData = new ServiceReference1.masterdataelementws();
-        //subMasteraData.objects = new ServiceReference1.masterdataobjectws[]
-        //{
-
-        //  new ATOMv0.ServiceReference1.masterdataobjectws{code = "BUDAPEST"}
-        //};
-
-        //ATOMv0.ServiceReference1.masterdataelementws[] objMasterData = new ServiceReference1.masterdataelementws[]
-        //{
-        //   new ATOMv0.ServiceReference1.masterdataelementws{code = "ATOMSITE", objects = subMasteraData.objects}
-        //};
-
-        //ATOMv0.ServiceReference1.userroledataws[] userRoleDataList = new ServiceReference1.userroledataws[]
-        //{
-        //   new ATOMv0.ServiceReference1.userroledataws{masterData=objMasterData,masterRole=impMasterRole, requestApprovals="Y",status="true",userMaster=impUserMaster}
-        //};
-
-        //importRoleData.flexwareToken = impDataToken;
-        //importRoleData.userRoleDataList = userRoleDataList;
-        //clientImportRole.Open();
-        //var result = clientImportRole.importUserRole(importRoleData);
-
-        #endregion
-
-
-        Authentication authentication = new Authentication(url);
-        string tokenAuthentication = authentication.AuthenticateUser(model.UserName, model.Password, strSolutionCode);
-        userrolesws userRoles = FlexWareGetUserRoles(authentication);
+        authenticationPortClient authClient = new authenticationPortClient();
+        credentialsws autCredentials = new credentialsws();
+        autCredentials.username = model.UserName;
+        autCredentials.password = model.Password;
+        autCredentials.solutionCode = strSolutionCode;
+        authenticate authenticate = new authenticate();
+        authenticate.credentials = autCredentials;
+        flexwaretokenws fxToken = new flexwaretokenws();
+        fxToken = authClient.authenticate(autCredentials);
+        var userRoles = authClient.getUserRoles(fxToken);
 
         if (userRoles != null)
         {
@@ -230,8 +149,6 @@ namespace ATOMv0.Controllers
           TempData["Roles"] = userRoles;
           Session["Roles"] = userRoles;
           string roles = "";
-
-
 
           foreach (var item in userRoles.roles)
           {
@@ -244,16 +161,14 @@ namespace ATOMv0.Controllers
               roles = roles + ";" + item.name;
             }
           }
-          //roles = "ATOM_ADMINISTRATOR;SALES_USER";
           FormsAuthentication.SetAuthCookie(model.UserName + "|" + roles, false);
-
         }
         else
         {
           isValidUser = false;
         }
-
-        masterdataelementws[] masterData = GetMasterData(authentication, out MasterDataErrors);
+        
+        var masterData = authClient.getMasterData(fxToken);
 
         if (masterData != null)
         {
@@ -261,36 +176,27 @@ namespace ATOMv0.Controllers
           {
             if (item.objects != null)
             {
-              foreach (var siteItem in item.objects)
+              if (item.code == strMasterDataAtomSite)
               {
-                TempData["SiteName"] = siteItem.name;
-                Session["SiteName"] = siteItem.name;
+                foreach (var siteItem in item.objects)
+                {
+
+                  TempData["SiteName"] = siteItem.name;
+                  Session["SiteName"] = siteItem.name;
+                }
               }
             }
-
           }
         }
+        
+        #endregion
+        
         return isValidUser;
       }
       catch (Exception ex)
       {
         return isValidUser = false;
       }
-    }
-
-    private masterdataelementws[] GetMasterData(Authentication authentication, out string errors)
-    {
-      try
-      {
-        errors = string.Empty;
-        return authentication.GetMasterData();
-      }
-      catch (Exception ex)
-      {
-        errors = "Error on MasterData: " + ReadException(ex);
-      }
-
-      return null;
     }
 
     private string ReadException(Exception ex)
@@ -303,20 +209,6 @@ namespace ATOMv0.Controllers
       {
         return ex.Message;
       }
-    }
-
-    private userrolesws FlexWareGetUserRoles(Authentication authentication)
-    {
-      try
-      {
-        // errors = string.Empty;
-        return authentication.GetUserRoles();
-      }
-      catch (Exception ex)
-      {
-        // errors = "Error on GetRoles: " + ReadException(ex);
-      }
-      return null;
     }
   }
 }

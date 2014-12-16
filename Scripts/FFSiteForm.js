@@ -219,12 +219,12 @@ $('#Next-ToBuildingSelection').hide();
 
 
 $('#msform').load(function () {
-  debugger;
+ 
 });
 
 
 $('#RegionID').load(function () {
-  debugger;
+ 
   //$.getJSON('/FFSite/GetDropDownData', { typeofData: "RegionList" }, function (data) {
   //  var items = '<option>Select a Country</option>';
   //  $.each(data, function (i, region) {
@@ -534,6 +534,8 @@ $('#Next-ToBucketSelection').on('click', function () {
     url: $('#getDropdownActionUrl').data('url'),
     data: { typeofData: "CustomersList", buildingfilter: building },
     success: function (data) {
+      // $('#BucketsDropDown').prop('disabled', true);
+      $('#BucketsDropDown').prop('disabled', 'disabled');
       var items = '<option>Select a Customer Project</option>';
       $.each(data, function (i, customer) {
         items += "<option value='" + customer.id + "'>" + customer.BPCode + "</option>";
@@ -575,7 +577,7 @@ $('#Next-ToBucketSelection').on('click', function () {
 
 
   $('#CustomersDropDown').change(function () {
-
+   
     customer = $('#CustomersDropDown option:selected').text();
 
     //$.getJSON('/FFSite/GetDropDownData', { typeofData: "StationTypesList", filter: customer }, function (data) {
@@ -612,6 +614,9 @@ $('#Next-ToBucketSelection').on('click', function () {
       data: { typeofData: "StationTypesList", filter: customer },
       success: function (data) {
         var result = '';
+        // $("#BucketsDropDown").prop("disabled", false);
+       
+        $('#BucketsDropDown').prop('disabled', false);
 
         var items = '<option>Select a Station Type</option>';
 
@@ -639,7 +644,7 @@ $('#Next-ToBucketSelection').on('click', function () {
 
 
   $('#BucketsDropDown').change(function () {
-
+   
     var bucket = $('#BucketsDropDown option:selected').text();
 
     console.log("Bucket: " + bucket);

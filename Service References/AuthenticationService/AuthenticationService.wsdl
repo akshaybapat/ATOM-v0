@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://flextronics.com/gms/ws/" xmlns:ns1="http://flexware.flextronics.com/ws/client/authentication" xmlns:ns3="http://schemas.xmlsoap.org/soap/http" name="AuthenticationService" targetNamespace="http://flextronics.com/gms/ws/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:import namespace="http://flexware.flextronics.com/ws/client/authentication" location="http://hkdlx122.hkd.flextronics.com:8080/GMS-WS/services/AuthenticationService?wsdl=authenticationPort.wsdl" />
+  <wsdl:types />
+  <wsdl:binding name="AuthenticationServiceSoapBinding" type="ns1:authenticationPort">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getSubstituteUser">
+      <soap:operation soapAction="getSubstituteUser" style="document" />
+      <wsdl:input name="getSubstituteUser">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getSubstituteUserResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidRequestFault">
+        <soap:fault use="literal" name="InvalidRequestFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidTokenFault">
+        <soap:fault use="literal" name="InvalidTokenFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ServiceFault_Exception">
+        <soap:fault use="literal" name="ServiceFault_Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="authenticate">
+      <soap:operation soapAction="authenticate" style="document" />
+      <wsdl:input name="authenticate">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="authenticateResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidCredentialsFault">
+        <soap:fault use="literal" name="InvalidCredentialsFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidRequestFault">
+        <soap:fault use="literal" name="InvalidRequestFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AccessDeniedFault">
+        <soap:fault use="literal" name="AccessDeniedFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ServiceFault_Exception">
+        <soap:fault use="literal" name="ServiceFault_Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCurrentRelease">
+      <soap:operation soapAction="getCurrentRelease" style="document" />
+      <wsdl:input name="getCurrentRelease">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getCurrentReleaseResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidRequestFault">
+        <soap:fault use="literal" name="InvalidRequestFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidTokenFault">
+        <soap:fault use="literal" name="InvalidTokenFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ServiceFault_Exception">
+        <soap:fault use="literal" name="ServiceFault_Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getMasterData">
+      <soap:operation soapAction="getMasterData" style="document" />
+      <wsdl:input name="getMasterData">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getMasterDataResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidRequestFault">
+        <soap:fault use="literal" name="InvalidRequestFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidTokenFault">
+        <soap:fault use="literal" name="InvalidTokenFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ServiceFault_Exception">
+        <soap:fault use="literal" name="ServiceFault_Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getUserRoles">
+      <soap:operation soapAction="getUserRoles" style="document" />
+      <wsdl:input name="getUserRoles">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getUserRolesResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidRequestFault">
+        <soap:fault use="literal" name="InvalidRequestFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidTokenFault">
+        <soap:fault use="literal" name="InvalidTokenFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ServiceFault_Exception">
+        <soap:fault use="literal" name="ServiceFault_Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getSubstitutedUsers">
+      <soap:operation soapAction="getSubstitutedUsers" style="document" />
+      <wsdl:input name="getSubstitutedUsers">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getSubstitutedUsersResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidRequestFault">
+        <soap:fault use="literal" name="InvalidRequestFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidTokenFault">
+        <soap:fault use="literal" name="InvalidTokenFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ServiceFault_Exception">
+        <soap:fault use="literal" name="ServiceFault_Exception" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AuthenticationService">
+    <wsdl:port name="AuthenticationPort" binding="tns:AuthenticationServiceSoapBinding">
+      <soap:address location="http://hkdlx122.hkd.flextronics.com:8080/GMS-WS/services/AuthenticationService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
