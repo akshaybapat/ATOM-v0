@@ -24,5 +24,6 @@ namespace ATOMv0.Models
         public string Color { get; set; }
         public string ProductionOrder { get; set; }
         public string ProductionLine { get; set; }
+        public Nullable<int> StartedQuantity { get; set; }
     }
 }

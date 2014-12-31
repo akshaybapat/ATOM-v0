@@ -24,5 +24,6 @@ namespace ATOMv0.Models
         public Nullable<int> KeyBusinessPartner { get; set; }
     
         public virtual ICollection<DimProductNumber> DimProductNumbers { get; set; }
+        public virtual DimBusinessPartner DimBusinessPartner { get; set; }
     }
 }

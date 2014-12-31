@@ -10,20 +10,14 @@
 namespace ATOMv0.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class MetricRoleType
+    public partial class GetBusinessPartnerList_Result
     {
-        public MetricRoleType()
-        {
-            this.MetricConfigurations = new HashSet<MetricConfiguration>();
-        }
-    
         public int id { get; set; }
-        public string RoleName { get; set; }
-        public string RoleType { get; set; }
-        public string Status { get; set; }
-    
-        public virtual ICollection<MetricConfiguration> MetricConfigurations { get; set; }
+        public string BusinessPartnerName { get; set; }
+        public string BPCode { get; set; }
+        public string SiteName { get; set; }
+        public string BuildingName { get; set; }
+        public Nullable<int> IsActive { get; set; }
     }
 }

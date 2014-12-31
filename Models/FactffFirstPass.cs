@@ -30,6 +30,11 @@ namespace ATOMv0.Models
         public Nullable<decimal> StationTypeFPY { get; set; }
         public Nullable<int> FFInstanceID { get; set; }
         public Nullable<int> PartIsUnit { get; set; }
+        public string Result { get; set; }
+        public Nullable<int> OldKeyStationType { get; set; }
+        public Nullable<int> OldKeyStationName { get; set; }
+        public string TestDate { get; set; }
+        public string CreationTime { get; set; }
     
         public virtual DimPhysicalStation DimPhysicalStation { get; set; }
     }

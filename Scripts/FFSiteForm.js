@@ -444,7 +444,8 @@ $('#Next-ToBuildingSelection').on('click', function () {
   var jsonAvailableCustomers = [];
 
   $('#SaveButton').click(function () {
-
+    $('#fieldBulding').prop('disabled', 'disabled');
+  
     //$('#bigblue').show();
 
     var assignedcustomers = $("#assignedcustomersresultset li");
@@ -497,8 +498,14 @@ $('#Next-ToBuildingSelection').on('click', function () {
       //url: '/DimFFInstances/Update/',
       url: $('#DimFFInstancesUpdateUrl').data('url'),
       data: JSON.stringify(ffInstanceAJAXModel),
-      contentType: 'application/json',
-      dataType: 'json'
+      //contentType: 'application/json',
+      //dataType: 'json'
+      success: function (data) {
+
+        alert("Saved successfully")
+        $('#fieldBulding').prop('disabled', false);
+      
+      }
 
     });
 
@@ -709,6 +716,12 @@ $('#Next-ToBucketSelection').on('click', function () {
   });
 
   $('#Finish').click(function () {
+    
+    if ($('#BucketsDropDown option:selected').text() == "Select a Bucket Type")
+    {
+      alert("Please select at least one bucket")
+      return false;
+    }
 
     var orderedstationtypes = $('#bucketedstationtypesresultset li');
 

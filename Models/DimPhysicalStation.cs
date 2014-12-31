@@ -25,6 +25,9 @@ namespace ATOMv0.Models
         public string CPUMegaHertz { get; set; }
         public string MemorySize { get; set; }
         public Nullable<int> KeyStationType { get; set; }
+        public string Status { get; set; }
+        public string FFInstanceID { get; set; }
+        public Nullable<int> LineID { get; set; }
     
         public virtual ICollection<FactffFirstPass> FactffFirstPasses { get; set; }
         public virtual DimStationType DimStationType { get; set; }

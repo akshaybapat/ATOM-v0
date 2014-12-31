@@ -31,5 +31,9 @@ namespace ATOMv0.Models
         public string DefectLocation { get; set; }
         public string ComponentDescription { get; set; }
         public string ProductionLine { get; set; }
+        public Nullable<int> OldKeyStationType { get; set; }
+        public Nullable<int> OldKeyStationName { get; set; }
+        public string Result { get; set; }
+        public string DefectTime { get; set; }
     }
 }

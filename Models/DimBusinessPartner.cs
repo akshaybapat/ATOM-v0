@@ -16,7 +16,7 @@ namespace ATOMv0.Models
     {
         public DimBusinessPartner()
         {
-            this.MetricConfigurations = new HashSet<MetricConfiguration>();
+            this.DimProductLines = new HashSet<DimProductLine>();
         }
     
         public int id { get; set; }
@@ -26,6 +26,6 @@ namespace ATOMv0.Models
         public Nullable<int> IsActive { get; set; }
         public Nullable<int> KeyBuilding { get; set; }
     
-        public virtual ICollection<MetricConfiguration> MetricConfigurations { get; set; }
+        public virtual ICollection<DimProductLine> DimProductLines { get; set; }
     }
 }

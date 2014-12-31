@@ -17,7 +17,7 @@ namespace ATOMv0.Models
     
     public partial class FFCubeEntities : DbContext
     {
-      public FFCubeEntities()
+        public FFCubeEntities()
             : base("name=FFCube2Entities")
         {
         }
@@ -44,7 +44,6 @@ namespace ATOMv0.Models
         public virtual DbSet<DimRegion> DimRegions { get; set; }
         public virtual DbSet<DimStationType> DimStationTypes { get; set; }
         public virtual DbSet<FactffFirstPass> FactffFirstPasses { get; set; }
-        public virtual DbSet<CISTestResultSet> CISTestResultSets { get; set; }
         public virtual DbSet<ffPart> ffParts { get; set; }
         public virtual DbSet<ffStation> ffStations { get; set; }
         public virtual DbSet<ffStationType> ffStationTypes { get; set; }
@@ -54,11 +53,8 @@ namespace ATOMv0.Models
         public virtual DbSet<FactffDefect> FactffDefects { get; set; }
         public virtual DbSet<RTYbyDay> RTYbyDays { get; set; }
         public virtual DbSet<SpeedMeasure> SpeedMeasures { get; set; }
-        public virtual DbSet<Metric> Metrics { get; set; }
-        public virtual DbSet<MetricRoleType> MetricRoleTypes { get; set; }
-        public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<MetricConfiguration> MetricConfigurations { get; set; }
         public virtual DbSet<DimBusinessPartner> DimBusinessPartners { get; set; }
+        public virtual DbSet<CISTestResultSet> CISTestResultSets { get; set; }
     
         public virtual ObjectResult<GetBusinessPartnerList_Result> GetBusinessPartnerList()
         {

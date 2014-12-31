@@ -17,7 +17,6 @@ namespace ATOMv0.Models
         public DimFacility()
         {
             this.DimBuildings = new HashSet<DimBuilding>();
-            this.MetricConfigurations = new HashSet<MetricConfiguration>();
         }
     
         public int id { get; set; }
@@ -27,6 +26,5 @@ namespace ATOMv0.Models
     
         public virtual ICollection<DimBuilding> DimBuildings { get; set; }
         public virtual DimCountry DimCountry { get; set; }
-        public virtual ICollection<MetricConfiguration> MetricConfigurations { get; set; }
     }
 }

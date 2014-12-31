@@ -17,7 +17,6 @@ namespace ATOMv0.Models
         public DimFFInstance()
         {
             this.DimProductNumbers = new HashSet<DimProductNumber>();
-            this.MetricConfigurations = new HashSet<MetricConfiguration>();
             this.DimStationTypes = new HashSet<DimStationType>();
         }
     
@@ -43,7 +42,6 @@ namespace ATOMv0.Models
     
         public virtual ICollection<DimProductNumber> DimProductNumbers { get; set; }
         public virtual DimModule DimModule { get; set; }
-        public virtual ICollection<MetricConfiguration> MetricConfigurations { get; set; }
         public virtual ICollection<DimStationType> DimStationTypes { get; set; }
     }
 }

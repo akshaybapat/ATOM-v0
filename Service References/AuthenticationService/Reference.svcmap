@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="12c74d0f-790c-44e0-bce2-bdb8fdfa19ae" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="addbbfb5-c5e8-49df-a27a-b1942a154c59" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,8 +22,8 @@
     <MetadataSource Address="http://hkdlx122.hkd.flextronics.com:8080/GMS-WS/services/AuthenticationService?wsdl" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="authenticationPort.wsdl" MetadataType="Wsdl" ID="fa4d8cf6-1845-4e16-98a0-c73851c0f626" SourceId="1" SourceUrl="http://hkdlx122.hkd.flextronics.com:8080/GMS-WS/services/AuthenticationService?wsdl=authenticationPort.wsdl" />
-    <MetadataFile FileName="AuthenticationService.wsdl" MetadataType="Wsdl" ID="28a9872c-a7c8-4617-8d81-5c823d7281dd" SourceId="1" SourceUrl="http://hkdlx122.hkd.flextronics.com:8080/GMS-WS/services/AuthenticationService?wsdl" />
+    <MetadataFile FileName="authenticationPort.wsdl" MetadataType="Wsdl" ID="6d52d511-8b82-4ccc-890b-7b8cad07d66e" SourceId="1" SourceUrl="http://hkdlx122.hkd.flextronics.com:8080/GMS-WS/services/AuthenticationService?wsdl=authenticationPort.wsdl" />
+    <MetadataFile FileName="AuthenticationService.wsdl" MetadataType="Wsdl" ID="a9473906-b8a2-4ee8-aeae-671d31795b0f" SourceId="1" SourceUrl="http://hkdlx122.hkd.flextronics.com:8080/GMS-WS/services/AuthenticationService?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

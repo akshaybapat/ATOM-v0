@@ -13,7 +13,7 @@ namespace ATOMv0.Models
     {
       [Description("ATOM_ADMINISTRATOR")]
       AtomAdministrator,
-      [Description("SITE_ADMINISTRATOR")]
+      [Description("SITE_CUSTOMER_PROGRAM_OWNER")]
       SiteAdministrator,
     }
 

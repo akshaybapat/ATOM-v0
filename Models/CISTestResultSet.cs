@@ -15,20 +15,19 @@ namespace ATOMv0.Models
     public partial class CISTestResultSet
     {
         public int id { get; set; }
-        public string CustomerName { get; set; }
-        public string SiteName { get; set; }
-        public string BaaNCompanyCode { get; set; }
-        public Nullable<int> UnitID { get; set; }
-        public Nullable<int> TestID { get; set; }
+        public string ProjectName { get; set; }
+        public int UnitID { get; set; }
+        public int TestID { get; set; }
         public string PartNumber { get; set; }
         public string PartRevision { get; set; }
         public string StationName { get; set; }
         public string StationType { get; set; }
         public string LineName { get; set; }
-        public Nullable<bool> IsPass { get; set; }
+        public bool IsPass { get; set; }
         public Nullable<int> TestGeneration { get; set; }
         public Nullable<System.DateTime> TestTime { get; set; }
         public Nullable<System.DateTime> DataRecvTime { get; set; }
         public Nullable<byte> ProcessStatus { get; set; }
+        public Nullable<System.DateTime> TestDate { get; set; }
     }
 }

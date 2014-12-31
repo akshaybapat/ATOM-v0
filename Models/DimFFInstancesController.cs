@@ -227,8 +227,10 @@ namespace ATOMv0.Models
                     }
                 }
             }
-
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            HttpResponseMessage response = new HttpResponseMessage();
+            response.StatusCode = HttpStatusCode.OK;
+            return response;
+           // return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
         protected override void Dispose(bool disposing)

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2e0b5b2421bb42219107055cb8ceccde" Name="Diagram1" ZoomLevel="71">
+      <Diagram DiagramId="2e0b5b2421bb42219107055cb8ceccde" Name="Diagram1" ZoomLevel="41">
         <EntityTypeShape EntityType="FFCubeModel.DimBucket" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FFCubeModel.DimBuilding" Width="1.5" PointX="7.5" PointY="2.375" IsExpanded="true" />
         <EntityTypeShape EntityType="FFCubeModel.DimBusinessUnit" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
@@ -24,11 +24,9 @@
         <AssociationConnector Association="FFCubeModel.FK_Region" ManuallyRouted="false" />
         <AssociationConnector Association="FFCubeModel.FK_Module" ManuallyRouted="false" />
         <EntityTypeShape EntityType="FFCubeModel.DimProductLine" Width="1.5" PointX="10" PointY="8.25" />
-        <EntityTypeShape EntityType="FFCubeModel.MetricConfiguration" Width="1.5" PointX="14.25" PointY="2.25" />
-        <AssociationConnector Association="FFCubeModel.FK_MetricConfiguration_DimFacility" />
-        <AssociationConnector Association="FFCubeModel.FK_MetricConfiguration_DimFFInstance" />
         <EntityTypeShape EntityType="FFCubeModel.DimBusinessPartner" Width="1.5" PointX="7.375" PointY="12" />
-        <AssociationConnector Association="FFCubeModel.FK_MetricConfiguration_DimBusinessPartner" />
+        <AssociationConnector Association="FFCubeModel.FK_BusinessPartner" />
+        <EntityTypeShape EntityType="FFCubeModel.CISTestResultSet" Width="1.5" PointX="9.375" PointY="11.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
