@@ -19,6 +19,10 @@ namespace ATOMv0.Models
     // GET: DimBusinessPartners
     public ActionResult Index(string sortOrder, string currentFilter, string columnFilter, string searchString, int? page)
     {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
       ViewBag.ColumnFilter = (columnFilter != null) ? columnFilter : "ALL";
 
       ViewBag.CurrentSort = sortOrder;
@@ -45,13 +49,16 @@ namespace ATOMv0.Models
       if (!String.IsNullOrEmpty(searchString))
       {
         dimBusinessPartners = dimBusinessPartners.Where(s => s.BusinessPartnerName.ToUpper().Contains(searchString.ToUpper()) || s.BPCode.ToUpper().Contains(searchString.ToUpper()));
+        contacts = contacts.Where(s => s.BusinessPartnerName.ToUpper().Contains(searchString.ToUpper()) || s.BPCode.ToUpper().Contains(searchString.ToUpper()));
+
+
       }
 
       if (!String.IsNullOrEmpty(columnFilter) && !columnFilter.Equals("ALL"))
       {
 
         dimBusinessPartners = dimBusinessPartners.Where(s => s.BPCode.ToUpper().Contains(columnFilter.ToUpper()));
-
+        contacts = contacts.Where(s => s.BPCode.ToUpper().Contains(columnFilter.ToUpper()));
       }
 
       switch (sortOrder)
@@ -59,18 +66,22 @@ namespace ATOMv0.Models
 
         case "BPName_Desc":
           dimBusinessPartners = dimBusinessPartners.OrderByDescending(s => s.BusinessPartnerName);
+          contacts = contacts.OrderByDescending(s => s.BusinessPartnerName);
           break;
 
         case "BPCode_Desc":
           dimBusinessPartners = dimBusinessPartners.OrderByDescending(s => s.BPCode);
+          contacts = contacts.OrderByDescending(s => s.BPCode);
           break;
 
         case "BPCode":
           dimBusinessPartners = dimBusinessPartners.OrderBy(s => s.BPCode);
+          contacts = contacts.OrderBy(s => s.BPCode);
           break;
 
         default:
           dimBusinessPartners = dimBusinessPartners.OrderBy(s => s.BusinessPartnerName);
+          contacts = contacts.OrderBy(s => s.BusinessPartnerName);
           break;
       }
       contacts = contacts.OrderBy(s => s.BusinessPartnerName);
@@ -90,6 +101,10 @@ namespace ATOMv0.Models
     // GET: DimBusinessPartners/Details/5
     public ActionResult Details(int? id)
     {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
       if (id == null)
       {
         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -121,30 +136,100 @@ namespace ATOMv0.Models
     // GET: DimBusinessPartners/Create
     public ActionResult Create()
     {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
+      ViewBag.KeySite = new SelectList(db.DimFacilities, "id", "SiteName");
+      ViewBag.KeyBuilding = new SelectList("", "id", "BuildingName");
       return View();
     }
-
+    public JsonResult GetBuildingData(string filter)
+    {
+      var querybuildings = db.DimBuildings.Where(x => x.DimFacility.SiteName.Equals(filter)).ToList();
+      IEnumerable<DimBuilding> buildings = querybuildings.Select(x => new DimBuilding { BuildingName = x.BuildingName, id = x.id });
+      return Json(buildings, JsonRequestBehavior.AllowGet);
+    }
     // POST: DimBusinessPartners/Create
     // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
     // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Create([Bind(Include = "id,BusinessPartnerName,BPCode,KeySite,IsActive,KeyBuilding")] DimBusinessPartner dimBusinessPartner)
+    public ActionResult Create([Bind(Include = "id,BusinessPartnerName,BPCode,KeySite,IsActive,KeyBuilding")] DimBusinessPartner dimBusinessPartner, FormCollection collection)
     {
+
+      if (string.IsNullOrEmpty(dimBusinessPartner.BusinessPartnerName))
+      {
+        ModelState.AddModelError("BusinessPartnerName", "Please Enter Business Partner Name");
+      }
+      if (string.IsNullOrEmpty(dimBusinessPartner.BPCode))
+      {
+        ModelState.AddModelError("BPCode", "Please Enter Business Partner Code");
+      }
+      if (string.IsNullOrEmpty(dimBusinessPartner.BPCode))
+      {
+        ModelState.AddModelError("BPCode", "Please Enter Business Partner Code");
+      }
+
+      if (dimBusinessPartner.KeySite == null)
+      {
+        ModelState.AddModelError("KeySite", "Please select at least one Site");
+      }
+      if (dimBusinessPartner.KeyBuilding == null)
+      {
+        ModelState.AddModelError("KeyBuilding", "Please select at least one Building");
+      }
+     
+
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
+      int siteID = 0;
+      int buildingID = 0;
+      if (collection["SiteNamesForBP"] != null && collection["SiteNamesForBP"] != "")
+      {
+        siteID = Convert.ToInt32(collection["SiteNamesForBP"]);
+      }
+
+      if (collection["buildingIDToCreate"] != null && collection["buildingIDToCreate"] != "Select a Building")
+      {
+        buildingID = Convert.ToInt32(collection["buildingIDToCreate"]);
+      }
+
       if (ModelState.IsValid)
       {
+        dimBusinessPartner.IsActive = 1;
         db.DimBusinessPartners.Add(dimBusinessPartner);
-
         db.SaveChanges();
         return RedirectToAction("Index");
       }
+      
+      ViewBag.KeySite = new SelectList(db.DimFacilities, "id", "SiteName");
 
+      if( dimBusinessPartner.KeySite!=null)
+      {
+        var siteName = db.DimFacilities.Where(a => a.id == dimBusinessPartner.KeySite).Select(a => a.SiteName);
+        string strSiteName = siteName.ToList()[0];
+        var querybuildings = db.DimBuildings.Where(x => x.DimFacility.SiteName.Equals(strSiteName)).ToList();
+        IEnumerable<DimBuilding> buildings = querybuildings.Select(x => new DimBuilding { BuildingName = x.BuildingName, id = x.id });
+        ViewBag.KeyBuilding = new SelectList(buildings, "id", "BuildingName");
+      }
+      else
+      {
+        ViewBag.KeyBuilding = new SelectList("", "id", "BuildingName");
+      }
+     
       return View(dimBusinessPartner);
     }
 
     // GET: DimBusinessPartners/Edit/5
     public ActionResult Edit(int? id)
     {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
       if (id == null)
       {
         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -164,6 +249,22 @@ namespace ATOMv0.Models
     [ValidateAntiForgeryToken]
     public ActionResult Edit([Bind(Include = "id,BusinessPartnerName,BPCode,KeySite,IsActive,KeyBuilding")] DimBusinessPartner dimBusinessPartner)
     {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
+
+
+      if (string.IsNullOrEmpty(dimBusinessPartner.BusinessPartnerName))
+      {
+        ModelState.AddModelError("BusinessPartnerName", "Please Enter Business Partner Name");
+      }
+      if (string.IsNullOrEmpty(dimBusinessPartner.BPCode))
+      {
+        ModelState.AddModelError("BPCode", "Please Enter Business Partner Code");
+      }
+
+
       if (ModelState.IsValid)
       {
         db.Entry(dimBusinessPartner).State = EntityState.Modified;
@@ -176,6 +277,10 @@ namespace ATOMv0.Models
     // GET: DimBusinessPartners/Delete/5
     public ActionResult Delete(int? id)
     {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
       if (id == null)
       {
         return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -193,6 +298,10 @@ namespace ATOMv0.Models
     [ValidateAntiForgeryToken]
     public ActionResult DeleteConfirmed(int id)
     {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
       DimBusinessPartner dimBusinessPartner = db.DimBusinessPartners.Find(id);
       db.DimBusinessPartners.Remove(dimBusinessPartner);
       db.SaveChanges();
@@ -206,6 +315,10 @@ namespace ATOMv0.Models
     [HttpPost, ActionName("Update")]
     public ActionResult Update(DimFFInstanceAJAXModel ffInstanceAJAXModel)
     {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
       var Building = db.DimBuildings.Where(x => x.BuildingName.Equals(ffInstanceAJAXModel.buildingname));
 
       if (ffInstanceAJAXModel.assignedcustomers != null)
@@ -219,14 +332,10 @@ namespace ATOMv0.Models
           if (!bpRow.KeyBuilding.HasValue)
           {
             bpRow.KeyBuilding = Building.FirstOrDefault().id;
-
             System.Diagnostics.Debug.Write(bpRow.KeyBuilding);
-
           }
           db.SaveChanges();
-
           System.Diagnostics.Debug.Write("Assigned List Saved" + '\n');
-
         }
       }
 
@@ -234,7 +343,6 @@ namespace ATOMv0.Models
       {
         foreach (string ffinstance in ffInstanceAJAXModel.availablecustomers)
         {
-
           var bpRow = db.DimBusinessPartners.Where(x => x.BPCode.Equals(ffinstance)).First();
 
           if (bpRow.KeyBuilding.HasValue)
@@ -245,11 +353,8 @@ namespace ATOMv0.Models
 
           }
           db.SaveChanges();
-
-
         }
       }
-
       return RedirectToAction("Index");
     }
 

@@ -147,13 +147,6 @@ warning 6002: The table/view 'FFCube.dbo.DataPollingExecutionTime' does not have
           <Property Name="FFInstanceID" Type="nvarchar" MaxLength="250" />
           <Property Name="LineID" Type="int" />
         </EntityType>
-        <EntityType Name="DimProcessType">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProcessTypeName" Type="varchar" MaxLength="255" />
-        </EntityType>
         <EntityType Name="DimProductLine">
           <Key>
             <PropertyRef Name="id" />
@@ -209,7 +202,6 @@ warning 6002: The table/view 'FFCube.dbo.FactffCompletions' does not have a prim
           <Property Name="Color" Type="nvarchar" MaxLength="50" />
           <Property Name="ProductionOrder" Type="nvarchar" MaxLength="250" />
           <Property Name="ProductionLine" Type="nvarchar" MaxLength="250" />
-          <Property Name="StartedQuantity" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'FFCube.dbo.FactffDefect' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -485,7 +477,6 @@ warning 6002: The table/view 'FFCube.dbo.SpeedMeasure' does not have a primary k
           <EntitySet Name="DimFinancialCompany" EntityType="Self.DimFinancialCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DimModule" EntityType="Self.DimModule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DimPhysicalStation" EntityType="Self.DimPhysicalStation" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DimProcessType" EntityType="Self.DimProcessType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DimProductLine" EntityType="Self.DimProductLine" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DimProductNumber" EntityType="Self.DimProductNumber" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DimRegion" EntityType="Self.DimRegion" Schema="dbo" store:Type="Tables" />
@@ -517,8 +508,7 @@ FROM [dbo].[DataPollingExecutionTime] AS [DataPollingExecutionTime]</DefiningQue
 [FactffCompletions].[DueDate] AS [DueDate], 
 [FactffCompletions].[Color] AS [Color], 
 [FactffCompletions].[ProductionOrder] AS [ProductionOrder], 
-[FactffCompletions].[ProductionLine] AS [ProductionLine], 
-[FactffCompletions].[StartedQuantity] AS [StartedQuantity]
+[FactffCompletions].[ProductionLine] AS [ProductionLine]
 FROM [dbo].[FactffCompletions] AS [FactffCompletions]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="FactffDefect" EntityType="Self.FactffDefect" store:Type="Tables" store:Schema="dbo">
@@ -630,7 +620,6 @@ FROM [dbo].[SpeedMeasure] AS [SpeedMeasure]</DefiningQuery>
           <Property Name="BucketName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="KeyProcessType" Type="Int32" />
           <NavigationProperty Name="DimStationTypes" Relationship="Self.FK_Bucket" FromRole="DimBucket" ToRole="DimStationType" />
-          <NavigationProperty Name="DimProcessType" Relationship="Self.FK_ProcessType" FromRole="DimBucket" ToRole="DimProcessType" />
         </EntityType>
         <EntityType Name="DimBuilding">
           <Key>
@@ -757,14 +746,6 @@ FROM [dbo].[SpeedMeasure] AS [SpeedMeasure]</DefiningQuery>
           <Property Name="FFInstanceID" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="LineID" Type="Int32" />
         </EntityType>
-        <EntityType Name="DimProcessType">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProcessTypeName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="DimBuckets" Relationship="Self.FK_ProcessType" FromRole="DimProcessType" ToRole="DimBucket" />
-        </EntityType>
         <EntityType Name="DimProductLine">
           <Key>
             <PropertyRef Name="id" />
@@ -886,22 +867,6 @@ FROM [dbo].[SpeedMeasure] AS [SpeedMeasure]</DefiningQuery>
           <Property Name="DatabaseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Endtime" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="FactffCompletion">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="KeyStartTime" Type="Int32" />
-          <Property Name="KeyFFInstance" Type="Int32" />
-          <Property Name="OrderTotal" Type="Int32" />
-          <Property Name="InProgress" Type="Int32" />
-          <Property Name="Finished" Type="Int32" />
-          <Property Name="DueDate" Type="DateTime" Precision="3" />
-          <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProductionOrder" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="ProductionLine" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="StartedQuantity" Type="Int32" />
-        </EntityType>
         <EntityType Name="FactffDefect">
           <Key>
             <PropertyRef Name="id" />
@@ -975,18 +940,6 @@ FROM [dbo].[SpeedMeasure] AS [SpeedMeasure]</DefiningQuery>
             </Principal>
             <Dependent Role="DimStationType">
               <PropertyRef Name="KeyBucket" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProcessType">
-          <End Role="DimProcessType" Type="Self.DimProcessType" Multiplicity="0..1" />
-          <End Role="DimBucket" Type="Self.DimBucket" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DimProcessType">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="DimBucket">
-              <PropertyRef Name="KeyProcessType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1122,7 +1075,6 @@ FROM [dbo].[SpeedMeasure] AS [SpeedMeasure]</DefiningQuery>
           <EntitySet Name="DimFinancialCompanies" EntityType="Self.DimFinancialCompany" />
           <EntitySet Name="DimModules" EntityType="Self.DimModule" />
           <EntitySet Name="DimPhysicalStations" EntityType="Self.DimPhysicalStation" />
-          <EntitySet Name="DimProcessTypes" EntityType="Self.DimProcessType" />
           <EntitySet Name="DimProductLines" EntityType="Self.DimProductLine" />
           <EntitySet Name="DimProductNumbers" EntityType="Self.DimProductNumber" />
           <EntitySet Name="DimRegions" EntityType="Self.DimRegion" />
@@ -1133,17 +1085,12 @@ FROM [dbo].[SpeedMeasure] AS [SpeedMeasure]</DefiningQuery>
           <EntitySet Name="ffStationTypes" EntityType="Self.ffStationType" />
           <EntitySet Name="fsSites" EntityType="Self.fsSite" />
           <EntitySet Name="DataPollingExecutionTimes" EntityType="Self.DataPollingExecutionTime" />
-          <EntitySet Name="FactffCompletions" EntityType="Self.FactffCompletion" />
           <EntitySet Name="FactffDefects" EntityType="Self.FactffDefect" />
           <EntitySet Name="RTYbyDays" EntityType="Self.RTYbyDay" />
           <EntitySet Name="SpeedMeasures" EntityType="Self.SpeedMeasure" />
           <AssociationSet Name="FK_Bucket" Association="Self.FK_Bucket">
             <End Role="DimBucket" EntitySet="DimBuckets" />
             <End Role="DimStationType" EntitySet="DimStationTypes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProcessType" Association="Self.FK_ProcessType">
-            <End Role="DimProcessType" EntitySet="DimProcessTypes" />
-            <End Role="DimBucket" EntitySet="DimBuckets" />
           </AssociationSet>
           <AssociationSet Name="FK_DimBuilding_DimFacility" Association="Self.FK_DimBuilding_DimFacility">
             <End Role="DimFacility" EntitySet="DimFacilities" />
@@ -1199,6 +1146,7 @@ FROM [dbo].[SpeedMeasure] AS [SpeedMeasure]</DefiningQuery>
             <End Role="DimProductLine" EntitySet="DimProductLines" />
           </AssociationSet>
           <EntitySet Name="CISTestResultSets" EntityType="FFCubeModel.CISTestResultSet" />
+          <EntitySet Name="FactffCompletions" EntityType="FFCubeModel.FactffCompletion" />
         </EntityContainer>
         <Association Name="FK_DimStationType_DimFFInstance">
           <End Type="FFCubeModel.DimFFInstance" Role="DimFFInstance" Multiplicity="0..1">
@@ -1273,6 +1221,21 @@ FROM [dbo].[SpeedMeasure] AS [SpeedMeasure]</DefiningQuery>
           <Property Name="DataRecvTime" Type="DateTime" Precision="3" />
           <Property Name="ProcessStatus" Type="Byte" />
           <Property Name="TestDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="FactffCompletion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KeyStartTime" Type="Int32" />
+          <Property Name="KeyFFInstance" Type="Int32" />
+          <Property Name="OrderTotal" Type="Int32" />
+          <Property Name="InProgress" Type="Int32" />
+          <Property Name="Finished" Type="Int32" />
+          <Property Name="DueDate" Type="DateTime" Precision="3" />
+          <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProductionOrder" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ProductionLine" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1409,14 +1372,6 @@ FROM [dbo].[SpeedMeasure] AS [SpeedMeasure]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DimProcessTypes">
-            <EntityTypeMapping TypeName="FFCubeModel.DimProcessType">
-              <MappingFragment StoreEntitySet="DimProcessType">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="ProcessTypeName" ColumnName="ProcessTypeName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DimProductLines">
             <EntityTypeMapping TypeName="FFCubeModel.DimProductLine">
               <MappingFragment StoreEntitySet="DimProductLine">
@@ -1539,23 +1494,6 @@ FROM [dbo].[SpeedMeasure] AS [SpeedMeasure]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="FactffCompletions">
-            <EntityTypeMapping TypeName="FFCubeModel.FactffCompletion">
-              <MappingFragment StoreEntitySet="FactffCompletions">
-                <ScalarProperty Name="StartedQuantity" ColumnName="StartedQuantity" />
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="KeyStartTime" ColumnName="KeyStartTime" />
-                <ScalarProperty Name="KeyFFInstance" ColumnName="KeyFFInstance" />
-                <ScalarProperty Name="OrderTotal" ColumnName="OrderTotal" />
-                <ScalarProperty Name="InProgress" ColumnName="InProgress" />
-                <ScalarProperty Name="Finished" ColumnName="Finished" />
-                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
-                <ScalarProperty Name="Color" ColumnName="Color" />
-                <ScalarProperty Name="ProductionOrder" ColumnName="ProductionOrder" />
-                <ScalarProperty Name="ProductionLine" ColumnName="ProductionLine" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="FactffDefects">
             <EntityTypeMapping TypeName="FFCubeModel.FactffDefect">
               <MappingFragment StoreEntitySet="FactffDefect">
@@ -1663,6 +1601,22 @@ FROM [dbo].[SpeedMeasure] AS [SpeedMeasure]</DefiningQuery>
                 <ScalarProperty Name="TestID" ColumnName="TestID" />
                 <ScalarProperty Name="UnitID" ColumnName="UnitID" />
                 <ScalarProperty Name="ProjectName" ColumnName="ProjectName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FactffCompletions">
+            <EntityTypeMapping TypeName="FFCubeModel.FactffCompletion">
+              <MappingFragment StoreEntitySet="FactffCompletions">
+                <ScalarProperty Name="ProductionLine" ColumnName="ProductionLine" />
+                <ScalarProperty Name="ProductionOrder" ColumnName="ProductionOrder" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="Finished" ColumnName="Finished" />
+                <ScalarProperty Name="InProgress" ColumnName="InProgress" />
+                <ScalarProperty Name="OrderTotal" ColumnName="OrderTotal" />
+                <ScalarProperty Name="KeyFFInstance" ColumnName="KeyFFInstance" />
+                <ScalarProperty Name="KeyStartTime" ColumnName="KeyStartTime" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

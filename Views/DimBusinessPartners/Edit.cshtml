@@ -2,7 +2,18 @@
 @{
   ViewBag.Title = "Edit";
 }
+@section UserName{
+  @if (ViewBag.UserName != null)
+  {
+    <div class="titleLogin">
+      Welcome
+    </div>
 
+    <div class="titleLogin">
+      @ViewBag.UserName
+    </div>
+  }
+}
 <h2>Edit Business Partner</h2>
 
 
@@ -20,7 +31,7 @@
     <div class="form-group">
       @Html.LabelFor(model => model.BusinessPartnerName, new { @class = "control-label" })
       <div>
-        @Html.EditorFor(model => model.BusinessPartnerName, new { @class = "form-control" })
+        @Html.EditorFor(model => model.BusinessPartnerName, new { @class = "form-control" })<br />
         @Html.ValidationMessageFor(model => model.BusinessPartnerName)
       </div>
     </div>
@@ -28,10 +39,20 @@
     <div class="form-group">
       @Html.LabelFor(model => model.BPCode, new { @class = "control-label" })
       <div>
-        @Html.EditorFor(model => model.BPCode, new { @class = "form-control" })
+        @Html.EditorFor(model => model.BPCode, new { @class = "form-control" })<br />
         @Html.ValidationMessageFor(model => model.BPCode)
         <br /><br />
       </div>
+    </div>
+
+
+
+
+    <div>
+      @Html.HiddenFor(model => model.KeySite)
+    </div>
+    <div>
+      @Html.HiddenFor(model => model.KeyBuilding)
     </div>
 
     <div class="form-group" align="center">

@@ -12,6 +12,7 @@
   <script src="@Url.Content("~/Scripts/jquery.validate.js")" type="text/javascript"></script>
   <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
   <link rel="StyleSheet" href="~/Content/atomStyles.css" type="text/css">
+  <link rel="StyleSheet" href="~/Content/Site.css" type="text/css">
   <link rel="StyleSheet" href="~/Content/responsive-tables.css" type="text/css">
   <link rel="StyleSheet" href="~/Content/simple-sidebar.css" type="text/css">
   <link href="~/Content/font-awesome.min.css" rel="stylesheet" type="text/css" media="all" />
@@ -47,16 +48,19 @@
 
           </li>
           <li>
-            @Html.ActionLink("About", "Index", "Home", null, new { href = "../Home/Index#about" })
+            @Html.ActionLink("About", "About", "Home")
 
           </li>
           <li>
-            @Html.ActionLink("Contact", "Index", "Home", null, new { href = "../Home/Index#contact" })
+            @Html.ActionLink("Contact", "Contact", "Home")
 
           </li>
           <li id="liLogout">
             @Html.ActionLink("Logout", "Logout", "Home")
 
+          </li>
+          <li>
+           @RenderSection("UserName", required: false)
           </li>
 
         </ul>
@@ -70,8 +74,11 @@
     @RenderBody()
   </div>
 
-  <footer style="text-align:center">
-    <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+  <footer>
+    <div style="color:black; background-color: gray; position: fixed; bottom: 0; text-align: center; width: 100%">
+      Copyright ©l @DateTime.Now.Year  www.flextronics.com. All Rights Reserved
+    </div>
+
   </footer>
 
 

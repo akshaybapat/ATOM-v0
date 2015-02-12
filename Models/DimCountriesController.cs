@@ -10,199 +10,251 @@ using PagedList;
 
 namespace ATOMv0.Models
 {
-    public class DimCountriesController : Controller
+  public class DimCountriesController : Controller
+  {
+    private FFCubeEntities db = new FFCubeEntities();
+
+    // GET: DimCountries
+    public ActionResult Index(string sortOrder, string currentFilter, string columnFilter, string searchString, int? page)
     {
-        private FFCubeEntities db = new FFCubeEntities();
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
+      ViewBag.ColumnFilter = (columnFilter != null) ? columnFilter : "ALL";
 
-        // GET: DimCountries
-        public ActionResult Index(string sortOrder, string currentFilter, string columnFilter, string searchString, int? page)
-        {
+      ViewBag.CurrentSort = sortOrder;
 
-            ViewBag.ColumnFilter = (columnFilter != null) ? columnFilter : "ALL";
+      if (searchString != null)
+      {
+        page = 1;
+      }
+      else
+      {
+        searchString = currentFilter;
+      }
 
-            ViewBag.CurrentSort = sortOrder;
+      ViewBag.CurrentFilter = searchString;
 
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
+      var dimcountries = db.DimCountries.Include(d => d.DimRegion);
 
-            ViewBag.CurrentFilter = searchString;
+      ViewBag.RegionList = db.DimCountries.Select(b => b.DimRegion.RegionName).Distinct();
 
-            var dimcountries = db.DimCountries.Include(d => d.DimRegion);
+      if (!String.IsNullOrEmpty(searchString))
+      {
+        dimcountries = dimcountries.Where(s => s.CountryName.ToUpper().Contains(searchString.ToUpper()) || s.DimRegion.RegionName.ToUpper().Contains(searchString.ToUpper()));
 
-            ViewBag.RegionList = db.DimCountries.Select(b => b.DimRegion.RegionName).Distinct();
+      }
 
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                dimcountries = dimcountries.Where(s => s.CountryName.ToUpper().Contains(searchString.ToUpper()) || s.DimRegion.RegionName.ToUpper().Contains(searchString.ToUpper()));
+      if (!String.IsNullOrEmpty(columnFilter) && !columnFilter.Equals("ALL"))
+      {
 
-            }
+        dimcountries = dimcountries.Where(s => s.DimRegion.RegionName.ToUpper().Contains(columnFilter.ToUpper()));
 
-            if (!String.IsNullOrEmpty(columnFilter) && !columnFilter.Equals("ALL"))
-            {
+      }
 
-                dimcountries = dimcountries.Where(s => s.DimRegion.RegionName.ToUpper().Contains(columnFilter.ToUpper()));
+      switch (sortOrder)
+      {
 
-            }
+        case "Country_Desc":
+          dimcountries = dimcountries.OrderByDescending(s => s.CountryName);
+          break;
 
-            switch (sortOrder)
-            {
+        case "Region_Desc":
+          dimcountries = dimcountries.OrderByDescending(s => s.DimRegion.RegionName);
+          break;
 
-                case "Country_Desc":
-                    dimcountries = dimcountries.OrderByDescending(s => s.CountryName);
-                    break;
+        case "Region":
+          dimcountries = dimcountries.OrderBy(s => s.DimRegion.RegionName);
+          break;
 
-                case "Region_Desc":
-                    dimcountries = dimcountries.OrderByDescending(s => s.DimRegion.RegionName);
-                    break;
+        default:
+          dimcountries = dimcountries.OrderBy(s => s.CountryName);
+          break;
+      }
 
-                case "Region":
-                    dimcountries = dimcountries.OrderBy(s => s.DimRegion.RegionName);
-                    break;
-
-                default:
-                    dimcountries = dimcountries.OrderBy(s => s.CountryName);
-                    break;
-            }
-
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-            return View(dimcountries.ToPagedList(pageNumber, pageSize));
-        }
-
-        // GET: DimCountries/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            DimCountry dimCountry = db.DimCountries.Find(id);
-            if (dimCountry == null)
-            {
-                return HttpNotFound();
-            }
-            return View(dimCountry);
-        }
-
-        // GET: DimCountries/Create
-        public ActionResult Create()
-        {
-            ViewBag.KeyRegion = new SelectList(db.DimRegions, "id", "RegionName");
-            return View();
-        }
-
-        // POST: DimCountries/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,CountryName,KeyRegion,IsActive")] DimCountry dimCountry)
-        {
-            if (ModelState.IsValid)
-            {
-                db.DimCountries.Add(dimCountry);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.KeyRegion = new SelectList(db.DimRegions, "id", "RegionName", dimCountry.KeyRegion);
-            return View(dimCountry);
-        }
-
-        // GET: DimCountries/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            DimCountry dimCountry = db.DimCountries.Find(id);
-            if (dimCountry == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.KeyRegion = new SelectList(db.DimRegions, "id", "RegionName", dimCountry.KeyRegion);
-            return View(dimCountry);
-        }
-
-        // POST: DimCountries/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,CountryName,KeyRegion,IsActive")] DimCountry dimCountry)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(dimCountry).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.KeyRegion = new SelectList(db.DimRegions, "id", "RegionName", dimCountry.KeyRegion);
-            return View(dimCountry);
-        }
-
-        // GET: DimCountries/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            DimCountry dimCountry = db.DimCountries.Find(id);
-            if (dimCountry == null)
-            {
-                return HttpNotFound();
-            }
-            return View(dimCountry);
-        }
-
-        // POST: DimCountries/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            DimCountry dimCountry = db.DimCountries.Find(id);
-            db.DimCountries.Remove(dimCountry);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        // GET: DimCountry/CountryList
-        public ActionResult CountryList(String id)
-        {
-            String RegionName = id;
-
-            var RegionID = from r in db.DimRegions
-                           where r.RegionName.Equals(RegionName)
-                           select r.id;
-
-            var countries = from r in db.DimCountries
-                            where r.KeyRegion == RegionID.FirstOrDefault()
-                            select r.CountryName;
-
-            if (HttpContext.Request.IsAjaxRequest())
-
-                return Json(new SelectList(
-                                countries.ToList())
-                           , JsonRequestBehavior.AllowGet);
-
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+      int pageSize = 10;
+      int pageNumber = (page ?? 1);
+      return View(dimcountries.ToPagedList(pageNumber, pageSize));
     }
+
+    // GET: DimCountries/Details/5
+    public ActionResult Details(int? id)
+    {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
+      if (id == null)
+      {
+        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+      }
+      DimCountry dimCountry = db.DimCountries.Find(id);
+      if (dimCountry == null)
+      {
+        return HttpNotFound();
+      }
+      return View(dimCountry);
+    }
+
+    // GET: DimCountries/Create
+    public ActionResult Create()
+    {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
+      ViewBag.KeyRegion = new SelectList(db.DimRegions, "id", "RegionName");
+      return View();
+    }
+
+    // POST: DimCountries/Create
+    // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+    // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult Create([Bind(Include = "id,CountryName,KeyRegion,IsActive")] DimCountry dimCountry)
+    {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
+      if (string.IsNullOrEmpty(dimCountry.CountryName))
+      {
+        ModelState.AddModelError("CountryName", "Please Enter Country Name");
+      }
+      if (dimCountry.KeyRegion == null)
+      {
+        ModelState.AddModelError("KeyRegion", "Please select Region");
+      }
+      if (ModelState.IsValid)
+      {
+        dimCountry.IsActive = 1;
+        db.DimCountries.Add(dimCountry);
+        db.SaveChanges();
+        return RedirectToAction("Index");
+      }
+
+      ViewBag.KeyRegion = new SelectList(db.DimRegions, "id", "RegionName", dimCountry.KeyRegion);
+      return View(dimCountry);
+    }
+
+    // GET: DimCountries/Edit/5
+    public ActionResult Edit(int? id)
+    {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
+      if (id == null)
+      {
+        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+      }
+      DimCountry dimCountry = db.DimCountries.Find(id);
+      if (dimCountry == null)
+      {
+        return HttpNotFound();
+      }
+      ViewBag.KeyRegion = new SelectList(db.DimRegions, "id", "RegionName", dimCountry.KeyRegion);
+      return View(dimCountry);
+    }
+
+    // POST: DimCountries/Edit/5
+    // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+    // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult Edit([Bind(Include = "id,CountryName,KeyRegion,IsActive")] DimCountry dimCountry)
+    {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
+
+      if (string.IsNullOrEmpty(dimCountry.CountryName))
+      {
+        ModelState.AddModelError("CountryName", "Please Enter Country Name");
+      }
+      if (dimCountry.KeyRegion == null)
+      {
+        ModelState.AddModelError("KeyRegion", "Please select Region");
+      }
+
+
+
+      if (ModelState.IsValid)
+      {
+        db.Entry(dimCountry).State = EntityState.Modified;
+        db.SaveChanges();
+        return RedirectToAction("Index");
+      }
+      ViewBag.KeyRegion = new SelectList(db.DimRegions, "id", "RegionName", dimCountry.KeyRegion);
+      return View(dimCountry);
+    }
+
+    // GET: DimCountries/Delete/5
+    public ActionResult Delete(int? id)
+    {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
+      if (id == null)
+      {
+        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+      }
+      DimCountry dimCountry = db.DimCountries.Find(id);
+      if (dimCountry == null)
+      {
+        return HttpNotFound();
+      }
+      return View(dimCountry);
+    }
+
+    // POST: DimCountries/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public ActionResult DeleteConfirmed(int id)
+    {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
+      DimCountry dimCountry = db.DimCountries.Find(id);
+      db.DimCountries.Remove(dimCountry);
+      db.SaveChanges();
+      return RedirectToAction("Index");
+    }
+
+    // GET: DimCountry/CountryList
+    public ActionResult CountryList(String id)
+    {
+      String RegionName = id;
+
+      var RegionID = from r in db.DimRegions
+                     where r.RegionName.Equals(RegionName)
+                     select r.id;
+
+      var countries = from r in db.DimCountries
+                      where r.KeyRegion == RegionID.FirstOrDefault()
+                      select r.CountryName;
+
+      if (HttpContext.Request.IsAjaxRequest())
+
+        return Json(new SelectList(
+                        countries.ToList())
+                   , JsonRequestBehavior.AllowGet);
+
+      return RedirectToAction("Index");
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        db.Dispose();
+      }
+      base.Dispose(disposing);
+    }
+  }
 }

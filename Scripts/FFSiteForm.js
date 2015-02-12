@@ -19,14 +19,9 @@ $.fn.scrollTo = function (target, options, callback) {
   });
 }
 
-
-
-
 function hello() {
   $('#liLogout').show();
 }
-
-
 
 function gotoURL(url) {
 
@@ -49,14 +44,32 @@ function gotoURL(url) {
 
 }
 
+
+$('#KeySite').change(function () {
+ 
+  var selectedSite = '';
+  selectedSite = $('#KeySite option:selected').text()
+
+  $.ajax({
+    type: 'POST',
+    url: $('#getDropdownActionUrl').data('url'),
+    //data: { typeofData: "BuildingList", filter: $('#FacilitiesID option:selected').text() },
+    data: { filter: selectedSite },
+    success: function (data) {
+      var items = '<option>Select a Building</option>';
+
+      $.each(data, function (i, building) {
+        items += "<option value='" + building.id + "'>" + building.BuildingName + '</option>';
+      });
+      $('#KeyBuilding').html(items);
+    }
+  });
+});
+
 function getAvailableCustomers() {
   var selection = '';
-
   //selection = $('#FacilitiesID option:selected').text()
-
   selection=$('#lblSiteName').text();
-
-
   var availablecustomers = '';
 
   //$.getJSON('/FFSite/GetDropDownData', { typeofData: "CustomersList", filter: selection }, function (data) {
@@ -81,12 +94,6 @@ function getAvailableCustomers() {
 
   //});
 
-
-
-
-
-
-
   $.ajax({
     type: 'POST',
     url: $('#getDropdownActionUrl').data('url'),
@@ -109,8 +116,6 @@ function getAvailableCustomers() {
       });
     }
   });
-
-
 }
 
 function getAssignedCustomers() {
@@ -124,13 +129,7 @@ function getAssignedCustomers() {
   //    assignedcustomers += '<li><div id="selectedFFInstance" >' + businesspartner.BPCode + '</div><div id="selectedFFInstanceID" style="display:none;">' + businesspartner.id + '</div></li>';
   //  });
   //  $('#assignedcustomersresultset').html(assignedcustomers);
-
-
-
   //});
-
-
-
   $.ajax({
     type: 'POST',
     url: $('#getDropdownActionUrl').data('url'),
@@ -146,11 +145,6 @@ function getAssignedCustomers() {
 
     }
   });
-
-
-
-
-
 }
 
 $('#rightnavigation').on('click', function (event) {
@@ -163,7 +157,6 @@ $('#leftnavigation').on('click', function (event) {
 
 });
 
-
 $('table tr').on('click', function (e) {
 
   var state = $(this).hasClass('highlight');
@@ -172,44 +165,40 @@ $('table tr').on('click', function (e) {
   $('.highlight').removeClass('highlight');
 
   if (!state) {
-
     $(this).addClass('highlight');
-
   }
-
-
 });
 
 
 
-$('#SearchBox').on("keyup paste", function () {
+//$('#SearchBox').on("keyup paste", function () {
 
-  var value = $(this).val().toUpperCase();
-  var $rows = $("table tr");
+//  var value = $(this).val().toUpperCase();
+//  var $rows = $("table tr");
 
-  if (value === '') {
-    $rows.show();
-    return false;
-  }
+//  if (value === '') {
+//    $rows.show();
+//    return false;
+//  }
 
-  $rows.each(function (index) {
-    if (index !== 0) {
+//  $rows.each(function (index) {
+//    if (index !== 0) {
 
-      $row = $(this);
+//      $row = $(this);
 
-      var column1 = $row.find("td").eq(0).text().toUpperCase();
-      var column2 = $row.find("td").eq(1).text().toUpperCase();
+//      var column1 = $row.find("td").eq(0).text().toUpperCase();
+//      var column2 = $row.find("td").eq(1).text().toUpperCase();
 
-      if ((column1.indexOf(value) > -1) || (column2.indexOf(value) > -1)) {
-        $row.show();
-      }
-      else {
-        $row.hide();
-      }
-    }
-  });
+//      if ((column1.indexOf(value) > -1) || (column2.indexOf(value) > -1)) {
+//        $row.show();
+//      }
+//      else {
+//        $row.hide();
+//      }
+//    }
+//  });
 
-});
+//});
 
 
 
@@ -340,38 +329,15 @@ $('#FacilitiesID').change(function () {
 
 $('#Next-ToBuildingSelection').on('click', function () {
 
-
   $('#Next-ToBucketSelection').hide();
   $('#availablecustomersresultset').html("");
   $('#assignedcustomersresultset').html("");
 
-  //var site = $('#FacilitiesID option:selected').text();
-
   var siteName = $('#lblSiteName').text();
-  
-
-
-//  $("#progressbar li").eq(0).append("<br/> { " + siteName + " }");
-
-  //$.getJSON('/FFSite/GetDropDownData', { typeofData: "BuildingList", filter: $('#FacilitiesID option:selected').text() }, function (data) {
-  //    var items = '<option>Select a Building</option>';
-
-  //    $.each(data, function (i, building) {
-  //        items += "<option value='" + building.id + "'>" + building.BuildingName + '</option>';              
-  //    });
-
-
-  //    $('#BuildingsID').html(items);
-
-  //});
-
-
-
 
   $.ajax({
     type: 'POST',
     url: $('#getDropdownActionUrl').data('url'),
-    //data: { typeofData: "BuildingList", filter: $('#FacilitiesID option:selected').text() },
     data: { typeofData: "BuildingList", filter: siteName },
     success: function (data) {
       var items = '<option>Select a Building</option>';
@@ -383,43 +349,42 @@ $('#Next-ToBuildingSelection').on('click', function () {
     }
   });
 
-
-
-
   $('#EditBuilding').click(function () {
-
     if ($('#BuildingsID option:selected').val() !== null) {
-      //var url = '/DimBuildings/Edit?id=' + $('#BuildingsID option:selected').val();
       var url = $('#DimBuildingsEditUrl').data('url') + "?id=" + $('#BuildingsID option:selected').val();
       gotoURL(url);
     }
   });
 
   $('#DetailsBuilding').click(function () {
-
     if ($('#BuildingsID option:selected').val() !== null) {
-      //var url = '/DimBuildings/Details?id=' + $('#BuildingsID option:selected').val();
       var url = $('#DimBuildingsDetailsUrl').data('url') + "?id=" + $('#BuildingsID option:selected').val();
       gotoURL(url);
     }
   });
 
   $('#DeleteBuilding').click(function () {
-
     if ($('#BuildingsID option:selected').val() !== null) {
-      //var url = '/DimBuildings/Delete?id=' + $('#BuildingsID option:selected').val();
       var url = $('#DimBuildingsDeleteUrl').data('url') + "?id=" + $('#BuildingsID option:selected').val();
       gotoURL(url);
     }
   });
 
-
-
-
   getAvailableCustomers();
-  //$('#Next-ToBucketSelection').show();
 
   $('#BuildingsID').change(function () {
+    
+    var building = $('#BuildingsID option:selected').text();
+
+    /*Display Next Button */
+    if (building == "Select a Building") {
+      $('#Next-ToBucketSelection').hide();
+      $('#assignedcustomersresultset').html('');
+      return false;
+    }
+    else {
+      $('#Next-ToBucketSelection').show();
+    }
 
     getAssignedCustomers();
 
@@ -432,11 +397,6 @@ $('#Next-ToBuildingSelection').on('click', function () {
     $("#progressbar li").eq(1).append("<br/> { " + building + " }");
 
     console.log($('#BuildingsID option:selected').val() == 'Select a Building')
-
-    /*Display Next Button */
-    if ($('#BuildingsID option:selected').val() == 'Select a Building') $('#Next-ToBucketSelection').hide();
-    else $('#Next-ToBucketSelection').show();
-
   });
 
 
@@ -444,10 +404,14 @@ $('#Next-ToBuildingSelection').on('click', function () {
   var jsonAvailableCustomers = [];
 
   $('#SaveButton').click(function () {
+    if ($('#BuildingsID option:selected').val() == 'Select a Building')
+    {
+      alert("Please select at least one building")
+      return false;
+    }
+
     $('#fieldBulding').prop('disabled', 'disabled');
   
-    //$('#bigblue').show();
-
     var assignedcustomers = $("#assignedcustomersresultset li");
 
     jsonAssignedCustomers = [];
@@ -456,7 +420,6 @@ $('#Next-ToBuildingSelection').on('click', function () {
       var row = $(customer).find("#selectedFFInstance").text()
       jsonAssignedCustomers.push(row);
       console.log(row);
-
     });
 
     var availablecustomers = $("#availablecustomersresultset li");
@@ -467,9 +430,7 @@ $('#Next-ToBuildingSelection').on('click', function () {
       var row = $(customer).find("#selectedFFInstance").text()
       jsonAvailableCustomers.push(row);
       console.log(row);
-
     });
-
 
     var ffInstanceAJAXModel = {
       buildingname: $('#BuildingsID option:selected').text(),
@@ -477,63 +438,36 @@ $('#Next-ToBuildingSelection').on('click', function () {
       availablecustomers: jsonAvailableCustomers
     }
 
-
-
     $.ajax({
       type: 'POST',
-      //url: '/DimBusinessPartners/Update/',
       url: $('#DimBusinessPartnersUpdateUrl').data('url'),
       data: JSON.stringify(ffInstanceAJAXModel),
       contentType: 'application/json',
       dataType: 'json',
       sucess: function (result) {
-
         $('#bigblue').hide()
-
       }
     });
 
     $.ajax({
       type: 'POST',
-      //url: '/DimFFInstances/Update/',
       url: $('#DimFFInstancesUpdateUrl').data('url'),
       data: JSON.stringify(ffInstanceAJAXModel),
-      //contentType: 'application/json',
-      //dataType: 'json'
       success: function (data) {
-
         alert("Saved successfully")
         $('#fieldBulding').prop('disabled', false);
-      
       }
-
     });
-
-
   });
-
-
 });
 
 
 $('#Next-ToBucketSelection').on('click', function () {
-
   var building = $('#BuildingsID option:selected').text();
   var customer = '';
 
   $('#stationtypesresultset').html('');
   $('#bucketedstationtypesresultset').html('');
-
-  //$.getJSON('/FFSite/GetDropDownData', { typeofData: "CustomersList", buildingfilter: building }, function (data) {
-  //             var items = '<option>Select a Customer Project</option>';
-  //             $.each(data, function (i, customer) {
-  //                 items += "<option value='" + customer.id + "'>" + customer.BPCode + "</option>";
-  //             });
-  //             $('#CustomersDropDown').html(items);
-
-
-  //         });
-  
 
   $('#divBuildingName').html(building);
   $.ajax({
@@ -541,31 +475,14 @@ $('#Next-ToBucketSelection').on('click', function () {
     url: $('#getDropdownActionUrl').data('url'),
     data: { typeofData: "CustomersList", buildingfilter: building },
     success: function (data) {
-      // $('#BucketsDropDown').prop('disabled', true);
       $('#BucketsDropDown').prop('disabled', 'disabled');
       var items = '<option>Select a Customer Project</option>';
       $.each(data, function (i, customer) {
         items += "<option value='" + customer.id + "'>" + customer.BPCode + "</option>";
       });
       $('#CustomersDropDown').html(items);
-      
     }
   });
-
-
-
-
-  //$.getJSON('/FFSite/GetDropDownData', { typeofData: "BucketsList" }, function (data) {
-  //    var items = '<option>Select a Bucket Type</option>';
-  //    $.each(data, function (i, bucket) {
-  //        items += "<option value='" + bucket.id + "'>" + bucket.BucketName + "</option>";
-  //    });
-  //    $('#BucketsDropDown').html(items);
-
-
-  //});
-
-
 
   $.ajax({
     type: 'POST',
@@ -580,51 +497,22 @@ $('#Next-ToBucketSelection').on('click', function () {
     }
   });
 
-
-
-
   $('#CustomersDropDown').change(function () {
-   
+  
     customer = $('#CustomersDropDown option:selected').text();
-
-    //$.getJSON('/FFSite/GetDropDownData', { typeofData: "StationTypesList", filter: customer }, function (data) {
-
-    //    var result = '';
-
-    //    var items = '<option>Select a Station Type</option>';
-
-    //    $.each(data, function (i, stationtype) {
-    //        items += "<option value='" + stationtype.id + "'>" + stationtype.StationTypeName + "</option>";
-
-    //        result += '<li><div id="selectedStationTypeName" style="border-radius:15px;">' + stationtype.StationTypeName + '</div><div id="selectedStationTypeID" style="display:none;">' + stationtype.id + '</div></li>';
-    //    });
-
-    //    $('#stationtypesresultset').html(result);
-
-    //    /* Get all rows from your 'table' but not the first one 
-    //    * that includes headers. */
-    //    var row = '';
-    //    var selectedFFInstanceID = '';
-    //    var rows = $('#stationtypesresultset li');
-
-    //    $(document).bind('selectstart dragstart', function (e) {
-    //        e.preventDefault(); return false;
-    //    });
-
-
-    //});
-
-
+    if (customer == "Select a Customer Project")
+    {
+      $('#stationtypesresultset').html('');
+      return false;
+    }
+    
     $.ajax({
       type: 'POST',
       url: $('#getDropdownActionUrl').data('url'),
       data: { typeofData: "StationTypesList", filter: customer },
       success: function (data) {
         var result = '';
-        // $("#BucketsDropDown").prop("disabled", false);
-       
         $('#BucketsDropDown').prop('disabled', false);
-
         var items = '<option>Select a Station Type</option>';
 
         $.each(data, function (i, stationtype) {
@@ -646,42 +534,17 @@ $('#Next-ToBucketSelection').on('click', function () {
         });
       }
     });
-
   });
 
 
   $('#BucketsDropDown').change(function () {
-   
+    
     var bucket = $('#BucketsDropDown option:selected').text();
-
+    if (bucket == "Select a Bucket Type")
+    {
+      return false;
+    }
     console.log("Bucket: " + bucket);
-
-    //$.getJSON('/FFSite/GetDropDownData', { typeofData: "StationTypesList", filter: customer, bucketfilter: bucket }, function (data) {
-
-    //  var result = '';
-
-    //  var items = '<option>Select a Station Type</option>';
-
-    //  $.each(data, function (i, stationtype) {
-    //    items += "<option value='" + stationtype.id + "'>" + stationtype.StationTypeName + "</option>";
-
-    //    result += '<li><div id="selectedStationTypeName" style="border-radius:15px;">' + stationtype.StationTypeName + '</div><div id="selectedStationTypeID" style="display:none;">' + stationtype.id + '</div></li>';
-    //  });
-
-    //  $('#bucketedstationtypesresultset').html(result);
-
-    //  /* Get all rows from your 'table' but not the first one 
-    //  * that includes headers. */
-    //  var row = '';
-    //  var selectedFFInstanceID = '';
-    //  var rows = $('#bucketedstationtypesresultset li');
-
-    //  $(document).bind('selectstart dragstart', function (e) {
-    //    e.preventDefault(); return false;
-    //  });
-
-    //});
-
 
     $.ajax({
       type: 'POST',
@@ -709,13 +572,16 @@ $('#Next-ToBucketSelection').on('click', function () {
         $(document).bind('selectstart dragstart', function (e) {
           e.preventDefault(); return false;
         });
-
       }
     });
-
   });
 
   $('#Finish').click(function () {
+  
+    if ($('#CustomersDropDown option:selected').text() == "Select a Customer Project") {
+      alert("Please select available station types")
+      return false;
+    }
     
     if ($('#BucketsDropDown option:selected').text() == "Select a Bucket Type")
     {
@@ -750,22 +616,7 @@ $('#Next-ToBucketSelection').on('click', function () {
       bucketname: $('#BucketsDropDown option:selected').text(),
       orderedstationtypes: jsonOrderedStationTypes,
       nonbucketedstationtypes: jsonNonBucketedStationTypes
-
     }
-
-    //$.ajax({
-    //  type: 'POST',
-    //  url: '/DimStationTypes/Update/',
-    //  data: JSON.stringify(bucketstntypesmodel),
-    //  contentType: 'application/json',
-    //  dataType: 'json',
-    //  sucess: function (result) {
-
-    //    $('#bigblue').hide();
-    //    alert(result);
-    //  }
-    //});
-
     $.ajax({
       type: 'POST',
       url: $('#DimStationTypesUpdateUrl').data('url'),
@@ -773,13 +624,11 @@ $('#Next-ToBucketSelection').on('click', function () {
       contentType: 'application/json',
       dataType: 'json',
       sucess: function (result) {
-
+        alert("Bucket assignment is successful")
         $('#bigblue').hide();
 
       }
     });
-
-
   });
 });
 

@@ -4,15 +4,33 @@
     hello();
   })
 </script>
+@section UserName{
+  @if (ViewBag.UserName != null)
+  {
+    <div class="titleLogin">
+      Welcome
+    </div>
+
+    <div class="titleLogin">
+      @ViewBag.UserName
+    </div>
+  }
+}
+
 <form>
   <div class="form-crud list-medium table" style="width:500px;vertical-align:central" align="center">
     <fieldset>
+      <div style="font-size:x-large">
+        Role Dashboard
+      </div>
+      <br />
       <div>
         @if (ViewBag.AtomAdmin == true)
         {
           @Html.ActionLink("Atom Administrator", "DimNavigation", "Home")
         }
       </div>
+      <br />
 
       <div>
         @if (ViewBag.SiteAdmin == true)

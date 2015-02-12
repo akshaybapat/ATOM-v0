@@ -27,6 +27,7 @@
         <EntityTypeShape EntityType="FFCubeModel.DimBusinessPartner" Width="1.5" PointX="7.375" PointY="12" />
         <AssociationConnector Association="FFCubeModel.FK_BusinessPartner" />
         <EntityTypeShape EntityType="FFCubeModel.CISTestResultSet" Width="1.5" PointX="9.375" PointY="11.75" />
+        <EntityTypeShape EntityType="FFCubeModel.FactffCompletion" Width="1.5" PointX="11.375" PointY="11.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -18,7 +18,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.BuildingName, htmlAttributes: new { @class = "control-label" })
             <div>
-                @Html.EditorFor(model => model.BuildingName)
+                @Html.EditorFor(model => model.BuildingName)<br />
                 @Html.ValidationMessageFor(model => model.BuildingName)
             </div>
         </div>
@@ -26,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.KeyFacility, "KeyFacility", htmlAttributes: new { @class = "control-label" })
             <div>
-                @Html.DropDownList("KeyFacility", String.Empty)
+                @Html.DropDownList("KeyFacility", String.Empty)<br />
                 @Html.ValidationMessageFor(model => model.KeyFacility)
                 <br /><br />
             </div>

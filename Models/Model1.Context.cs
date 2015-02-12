@@ -38,7 +38,6 @@ namespace ATOMv0.Models
         public virtual DbSet<DimFinancialCompany> DimFinancialCompanies { get; set; }
         public virtual DbSet<DimModule> DimModules { get; set; }
         public virtual DbSet<DimPhysicalStation> DimPhysicalStations { get; set; }
-        public virtual DbSet<DimProcessType> DimProcessTypes { get; set; }
         public virtual DbSet<DimProductLine> DimProductLines { get; set; }
         public virtual DbSet<DimProductNumber> DimProductNumbers { get; set; }
         public virtual DbSet<DimRegion> DimRegions { get; set; }
@@ -49,12 +48,12 @@ namespace ATOMv0.Models
         public virtual DbSet<ffStationType> ffStationTypes { get; set; }
         public virtual DbSet<fsSite> fsSites { get; set; }
         public virtual DbSet<DataPollingExecutionTime> DataPollingExecutionTimes { get; set; }
-        public virtual DbSet<FactffCompletion> FactffCompletions { get; set; }
         public virtual DbSet<FactffDefect> FactffDefects { get; set; }
         public virtual DbSet<RTYbyDay> RTYbyDays { get; set; }
         public virtual DbSet<SpeedMeasure> SpeedMeasures { get; set; }
         public virtual DbSet<DimBusinessPartner> DimBusinessPartners { get; set; }
         public virtual DbSet<CISTestResultSet> CISTestResultSets { get; set; }
+        public virtual DbSet<FactffCompletion> FactffCompletions { get; set; }
     
         public virtual ObjectResult<GetBusinessPartnerList_Result> GetBusinessPartnerList()
         {

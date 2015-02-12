@@ -22,9 +22,22 @@
 
   });
 </script>
+@section UserName{
+  @if (ViewBag.UserName != null)
+  {
+    <div class="titleLogin">
+      Welcome
+    </div>
+
+    <div class="titleLogin">
+      @ViewBag.UserName
+    </div>
+  }
+}
+
 <form id="msform">
 
-  
+
 
 
 
@@ -39,7 +52,7 @@
   <div>
 
     <fieldset style="margin:0 10%; min-width:600px;">
-     
+
       <h2>Select your site</h2>
       @Html.ValidationSummary(true)
       <input id="getDropdownActionUrl" type="hidden" data-url="@Url.Action("GetDropDownData", "FFSite")" />
@@ -78,7 +91,7 @@
         @Html.Label("", (string)ViewBag.SiteName, new { id = "lblSiteName" })
       </div>
 
-      <div id="divErrorMsg"  class="form-control-static" style="align-self:center">
+      <div id="divErrorMsg" class="form-control-static" style="align-self:center">
 
         <span></span>No site records found for this user.
       </div>

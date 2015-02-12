@@ -17,9 +17,10 @@
         @Html.ValidationSummary(true)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.RegionName, new { @class = "control-label" })
+            @*@Html.LabelFor(model => model.RegionName, new { @class = "control-label" })*@
+          @Html.Label("Region Name")
             <div>
-                @Html.EditorFor(model => model.RegionName)
+                @Html.EditorFor(model => model.RegionName)<br />
                 @Html.ValidationMessageFor(model => model.RegionName)
                 <br /><br />
             </div>

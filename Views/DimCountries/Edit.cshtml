@@ -1,68 +1,81 @@
 ﻿@model ATOMv0.Models.DimCountry
 @{
-    ViewBag.Title = "Edit";
+  ViewBag.Title = "Edit";
 }
+@section UserName{
+  @if (ViewBag.UserName != null)
+  {
+    <div class="titleLogin">
+      Welcome
+    </div>
 
+    <div class="titleLogin">
+      @ViewBag.UserName
+    </div>
+  }
+}
 <h2>Edit</h2>
 
 @using (Html.BeginForm("Edit", "DimCountries", FormMethod.Post, new { @class = "form-crud" }))
 {
-    @Html.AntiForgeryToken()
+  @Html.AntiForgeryToken()
 
-    <div>
-        <h2>Edit</h2>
-        <h4>DimCountry</h4>
-        <hr />
-        @Html.ValidationSummary(true)
-        @Html.HiddenFor(model => model.id)
+  <div>
+    <h2>Edit</h2>
+    <h4>DimCountry</h4>
+    <hr />
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CountryName, new { @class = "control-label" })
-            <div>
-                @Html.EditorFor(model => model.CountryName)
-                @Html.ValidationMessageFor(model => model.CountryName)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.KeyRegion, "KeyRegion", new { @class = "control-label" })
-            <div>
-                @Html.DropDownList("KeyRegion", String.Empty)
-                @Html.ValidationMessageFor(model => model.KeyRegion)
-                <br /><br />
-            </div>
-        </div>
-
-      <div class="form-group" align="center">
-        <table>
-          <tr>
-            <td>Status</td>
-            <td>
-              <div style="float:right;vertical-align:top" align="left">
-                @Html.RadioButtonFor(model => model.IsActive, 1)Active
-                @Html.RadioButtonFor(model => model.IsActive, 0)InActive
-              </div>
-
-            </td>
-          </tr>
-        </table>
+    <div class="form-group">
+      @*@Html.LabelFor(model => model.CountryName, new { @class = "control-label" })*@
+      @Html.Label("Country Name")
+      <div>
+        @Html.EditorFor(model => model.CountryName)<br />
+        @Html.ValidationMessageFor(model => model.CountryName)
       </div>
+    </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-1 col-md-10">
-                <input type="submit" value="Save" class="btn btn-primary" />
+    <div class="form-group">
+      @*@Html.LabelFor(model => model.KeyRegion, "KeyRegion", new { @class = "control-label" })*@
+      @Html.Label("Region Name")
+      <div>
+        @Html.DropDownList("KeyRegion", String.Empty)<br />
+        @Html.ValidationMessageFor(model => model.KeyRegion)
+        <br /><br />
+      </div>
+    </div>
+
+    <div class="form-group" align="center">
+      <table>
+        <tr>
+          <td>Status</td>
+          <td>
+            <div style="float:right;vertical-align:top" align="left">
+              @Html.RadioButtonFor(model => model.IsActive, 1)Active
+              @Html.RadioButtonFor(model => model.IsActive, 0)InActive
             </div>
-        </div>
+
+          </td>
+        </tr>
+      </table>
     </div>
 
-    <div>
-        @Html.ActionLink("Back to List", "Index")
+    <div class="form-group">
+      <div class="col-md-offset-1 col-md-10">
+        <input type="submit" value="Save" class="btn btn-primary" />
+      </div>
     </div>
+  </div>
+
+  <div>
+    @Html.ActionLink("Back to List", "Index")
+  </div>
 
 }
 
 
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+  @Scripts.Render("~/bundles/jqueryval")
 }

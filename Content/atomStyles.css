@@ -164,6 +164,11 @@ body {
   filter: alpha(opacity=95);
 }
 
+.titleLogin
+{
+  font-size:small;
+  color:blueviolet;
+}
 
 /*Global Class properties*/
 table {

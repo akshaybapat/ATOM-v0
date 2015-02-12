@@ -24,6 +24,5 @@ namespace ATOMv0.Models
         public Nullable<int> KeyProcessType { get; set; }
     
         public virtual ICollection<DimStationType> DimStationTypes { get; set; }
-        public virtual DimProcessType DimProcessType { get; set; }
     }
 }

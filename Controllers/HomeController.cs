@@ -37,6 +37,8 @@ namespace ATOMv0.Controllers
               ViewBag.SiteAdmin = true;
             }
           }
+          ViewBag.UserName = userRoles.userMaster.firstName + " " + userRoles.userMaster.lastName;
+          Session["UserName"] = ViewBag.UserName;
         }
         return View("LandingPage");
       }
@@ -49,6 +51,10 @@ namespace ATOMv0.Controllers
     [AuthorizeEnum(RolesEnum.Roles.AtomAdministrator)]
     public ActionResult DimNavigation()
     {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
       return View();
     }
 
@@ -117,6 +123,11 @@ namespace ATOMv0.Controllers
       {
         Session["SiteName"] = null;
       }
+      if (Session["UserName"] != null)
+      {
+        Session["UserName"] = null;
+      }
+
     }
 
     private bool ValidateUser(LoginModel model)
@@ -167,7 +178,7 @@ namespace ATOMv0.Controllers
         {
           isValidUser = false;
         }
-        
+
         var masterData = authClient.getMasterData(fxToken);
 
         if (masterData != null)
@@ -188,9 +199,9 @@ namespace ATOMv0.Controllers
             }
           }
         }
-        
+
         #endregion
-        
+
         return isValidUser;
       }
       catch (Exception ex)

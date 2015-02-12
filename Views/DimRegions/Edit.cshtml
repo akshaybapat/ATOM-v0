@@ -6,7 +6,7 @@
 <h2>Edit</h2>
 
 
-@using (Html.BeginForm("Edit", "DimRegion", FormMethod.Post, new { @class = "form-crud" }))
+@using (Html.BeginForm("Edit", "DimRegions", FormMethod.Post, new { @class = "form-crud" }))
 {
     @Html.AntiForgeryToken()
 
@@ -18,9 +18,10 @@
         @Html.HiddenFor(model => model.id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.RegionName, new { @class = "control-label" })
+            @*@Html.LabelFor(model => model.RegionName, new { @class = "control-label" })*@
+          @Html.Label("Region Name")
             <div>
-                @Html.EditorFor(model => model.RegionName)
+                @Html.EditorFor(model => model.RegionName)<br />
                 @Html.ValidationMessageFor(model => model.RegionName)
                 <br /><br />
             </div>

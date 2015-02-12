@@ -108,6 +108,14 @@ namespace ATOMv0.Models
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "id,BuildingName,KeyFacility,IsActive")] DimBuilding dimBuilding)
         {
+          if (string.IsNullOrEmpty(dimBuilding.BuildingName))
+          {
+            ModelState.AddModelError("BuildingName", "Please Enter Building Name");
+          }
+          if (dimBuilding.KeyFacility == null)
+          {
+            ModelState.AddModelError("KeyFacility", "Please select Site");
+          }
             if (ModelState.IsValid)
             {
                 db.DimBuildings.Add(dimBuilding);

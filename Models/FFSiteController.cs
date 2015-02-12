@@ -26,6 +26,10 @@ namespace ATOMv0.Models
 
     public ActionResult Index()
     {
+      if (Session["UserName"] != null)
+      {
+        ViewBag.UserName = Session["UserName"];
+      }
       string siteName = Convert.ToString(Session["SiteName"]);
       //string siteName = Convert.ToString(TempData["SiteName"]);
       // bool isRole = User.IsInRole(RolesEnum.Roles.AtomAdministrator.ToString());
@@ -181,6 +185,11 @@ namespace ATOMv0.Models
 
         case "StationTypesList":
 
+          var stationTypes = db.DimFFInstances.Where(x => x.ProjectName.Equals(filter));
+          if (stationTypes.Count() == 0)
+          {
+            return null;
+          }
           var ffinstance = db.DimFFInstances.Where(x => x.ProjectName.Equals(filter)).First();
 
           var querystationtypes = db.DimStationTypes.Where(x => x.FFInstanceID == ffinstance.id);
@@ -202,6 +211,7 @@ namespace ATOMv0.Models
           IEnumerable<DimStationType> stationtypes = liststationtypes.Select(x => new DimStationType { StationTypeName = x.StationTypeName, id = x.id });
 
           return Json(stationtypes, JsonRequestBehavior.AllowGet);
+
 
         case "BucketsList":
 
